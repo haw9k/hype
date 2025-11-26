@@ -1,0 +1,247 @@
+# Difi_Helman
+import random
+from math import gcd
+
+
+# -------------------------
+# Быстрое возведение в степень по модулю
+# -------------------------
+def custom_mod(number: int, step: int, mod: int) -> int:
+    p = 1
+    while step > 0:
+        if step & 1:
+            p = (p * number) % mod
+        number = (number * number) % mod
+        step >>= 1
+    return p
+
+
+# -------------------------
+# Тест Миллера–Рабина и генерация простого числа
+# -------------------------
+class MillerRabin:
+    def randomer(self, min_val: int) -> int:
+        bits = min_val.bit_length()
+        num = random.getrandbits(bits - 2)
+        num |= (1 << (bits - 3))
+        num = (num << 1) | 1  # сделать нечётным
+        return num
+
+    def search_b(self, n: int) -> int:
+        acc = n - 1
+        b = 0
+        while acc % 2 == 0:
+            b += 1
+            acc //= 2
+        return b
+
+    def search_m(self, n: int, b: int) -> int:
+        return (n - 1) // (2 ** b)
+
+    def start_examination(self, n: int, b: int, m: int) -> bool:
+        for i in range(2, 256):
+            if n % i == 0:
+                return False
+
+        a = random.randrange(2, n - 1)
+        z = custom_mod(a, m, n)
+
+        if z == 1 or z == n - 1:
+            return True
+
+        for j in range(1, b + 1):
+            z = custom_mod(a, m * (2 ** j), n)
+            if z == n - 1:
+                return True
+
+        return False
+
+    def create_simple(self) -> int:
+        min_val = int('1' + '0' * 21, 2)
+        n = self.randomer(min_val)
+        b = self.search_b(n)
+        m = self.search_m(n, b)
+
+        ver = 1 / 4
+        iter_count = 0
+        attempts = 0
+
+        print("\n---------------------------------------------\n")
+        print(f"Число: {n}")
+        print(f"Количество делений на 2: {b}")
+        print(f"m: {m}")
+
+        while iter_count != 5:
+            iter_count += 1
+            attempts += 1
+
+            result = self.start_examination(n, b, m)
+            print(f"\nРезультат проверки: {result}")
+
+            if result:
+                print(f"Вероятность составного: {ver ** iter_count * 100}%")
+            else:
+                print("Вероятность составного: 100%")
+                if attempts >= 30:
+                    print("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                    print("За 30 попыток не найдено простое число :(")
+                    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")
+                    break
+
+                iter_count = 0
+                n += 2
+                b = self.search_b(n)
+                m = self.search_m(n, b)
+                print("---------------------------------------------\n")
+                print(f"Число: {n}")
+                print(f"Количество делений на 2: {b}")
+                print(f"m: {m}")
+
+        print("---------------------------------------------\n")
+        print(f"Простое число {n}")
+        return n
+
+
+# -------------------------
+# Поиск примитивного элемента
+# -------------------------
+def find_primitive_element(p: int) -> int:
+    current_simple_list = []
+
+    # Функция проверки числа на простоту с помощью Миллера-Рабина
+    def is_prime(n: int, tests: int = 5) -> bool:
+        if n < 2:
+            return False
+        if n in (2, 3):
+            return True
+        if n % 2 == 0:
+            return False
+
+        # Находим b и m для n-1 = 2^b * m
+        m = n - 1
+        b = 0
+        while m % 2 == 0:
+            b += 1
+            m //= 2
+
+        # Проводим tests тестов Миллера-Рабина
+        for _ in range(tests):
+            a = random.randrange(2, n - 1)
+            z = custom_mod(a, m, n)
+
+            if z == 1 or z == n - 1:
+                continue
+
+            for j in range(1, b):
+                z = custom_mod(z, 2, n)
+                if z == n - 1:
+                    break
+            else:
+                return False
+
+        return True
+
+    # Находим простые делители p-1
+    temp = p - 1
+    divisor = 2
+
+
+    while divisor * divisor <= temp:
+        if temp % divisor == 0:
+            # Проверяем, является ли делитель простым
+            if is_prime(divisor):
+                current_simple_list.append(divisor)
+            # Проверяем второй делитель (temp/divisor)
+            other_divisor = temp // divisor
+            if other_divisor != divisor and is_prime(other_divisor):
+                current_simple_list.append(other_divisor)
+        divisor += 1
+
+    # Проверяем само число temp, если оно простое
+    if temp > 1 and is_prime(temp):
+        current_simple_list.append(temp)
+
+    # Убираем дубликаты и сортируем
+    current_simple_list = sorted(list(set(current_simple_list)))
+
+    print(f"Простые делители {p - 1}: {current_simple_list}")
+
+    # Подсчёт примитивных корней (по вашей логике)
+    count_primitive = 0
+    for j in range(1, p - 1):
+        flag = True
+        for q in current_simple_list:
+            if j % q == 0:
+                flag = False
+                break
+        if flag:
+            count_primitive += 1
+
+    print(f"Количество примитивных корней: {count_primitive}")
+    print(f"Тогда доля примитивных корней равна {count_primitive / (p - 1)}")
+
+    primitive = 0
+    # Поиск примитивного корня снизу от p//2
+    for candidate in range(p // 2, 2, -1):
+        primitive = candidate
+        for q in current_simple_list:
+            if custom_mod(candidate, (p - 1) // q, p) == 1:
+                primitive = 0
+                break
+        if primitive != 0:
+            break
+
+    rnd = random.Random()
+    while True:
+        t = rnd.randrange(2, p - 1)
+        if gcd(t, p - 1) == 1:
+            print(f"НОД({t} и {p - 1}) = 1")
+            a_t_mod_p = pow(primitive, t, p)
+            print(
+                f"Тогда a^t ≡ {a_t_mod_p} (mod {p}) тоже первообразный корень"
+            )
+            break
+
+    print(f"Примитивный элемент {primitive}")
+    print()
+    return primitive
+# -------------------------
+# Диффи–Хеллман
+# -------------------------
+def create_open_keys(p: int, g: int) -> dict:
+    X = random.randrange(2, p - 1)
+    Y = custom_mod(g, X, p)
+    return {"X": X, "Y": Y}
+
+
+def create_close_key(Y: int, X: int, p: int) -> int:
+    return custom_mod(Y, X, p)
+
+
+# -------------------------
+# MAIN
+# -------------------------
+def main():
+    simple_generater = MillerRabin()
+    p = simple_generater.create_simple()
+
+    g = find_primitive_element(p)
+
+    alice_keys = create_open_keys(p, g)
+    print(f"Ключи Алисы: {alice_keys}")
+
+    bob_keys = create_open_keys(p, g)
+    print(f"Ключи Боба: {bob_keys}\n")
+
+    alice_secret = create_close_key(bob_keys["Y"], alice_keys["X"], p)
+    bob_secret = create_close_key(alice_keys["Y"], bob_keys["X"], p)
+
+    print(f"Секретный ключ Боба: {bob_secret}")
+    print(f"Секретный ключ Алисы: {alice_secret}")
+
+    correct_key = create_close_key(g, alice_keys["X"] * bob_keys["X"], p)
+    print(f"Правильный ключ: {correct_key}")
+
+
+if __name__ == "__main__":
+    main()
