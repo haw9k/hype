@@ -80,3 +80,18 @@ FROM   employees e
        JOIN employees m
             ON e.manager_id = m.employee_id
 WHERE  e.hire_date < m.hire_date;
+
+
+Пример программы поиска работника и соответствующего отдела по руководителю с таб.номером 103
+     declare
+     v_name     employees.first_name%type;
+    v_deptname departments.department_name%type;
+begin
+    select  first_name , department_name into v_name, v_deptname
+    from  employees join departments using (department_id)
+    where employee_id = ( select manager_id from employees    where employee_id = 103);
+    
+    dbms_output.put_line(v_name);
+    dbms_output.put_line(v_deptname);
+    
+end;
