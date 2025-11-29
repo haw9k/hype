@@ -30,3 +30,53 @@ FROM   employees   e
        JOIN departments d ON e.department_id = d.department_id
        JOIN locations   l ON d.location_id = l.location_id
 WHERE  l.city = 'Toronto';
+
+SELECT e.last_name    AS "Employee",
+       e.employee_id  AS "Emp#",
+       m.last_name    AS "Manager",
+       m.employee_id  AS "MGR#"
+FROM   employees e
+       JOIN employees m
+            ON e.manager_id = m.employee_id;
+
+SELECT e.last_name    AS "Employee",
+       e.employee_id  AS "Emp#",
+       m.last_name    AS "Manager",
+       m.employee_id  AS "MGR#"
+FROM   employees e
+       LEFT JOIN employees m
+              ON e.manager_id = m.employee_id
+ORDER  BY e.employee_id;
+
+SELECT e.department_id        AS dept_no,
+       e.last_name            AS employee,
+       c.last_name            AS colleague
+FROM   employees e
+       JOIN employees c
+            ON e.department_id = c.department_id
+           AND e.employee_id <> c.employee_id
+ORDER BY e.department_id, e.last_name, c.last_name;
+
+SELECT e.last_name,
+       j.job_title,
+       d.department_name,
+       e.salary
+FROM   employees   e
+       JOIN jobs       j ON e.job_id = j.job_id
+       JOIN departments d ON e.department_id = d.department_id;
+
+SELECT e.last_name,
+       e.hire_date
+FROM   employees e,
+       employees d
+WHERE  d.last_name = 'Davies'
+  AND  e.hire_date > d.hire_date;
+
+SELECT e.last_name   AS "Employee",
+       e.hire_date   AS "Emp_hire_date",
+       m.last_name   AS "Manager",
+       m.hire_date   AS "Mgr_hire_date"
+FROM   employees e
+       JOIN employees m
+            ON e.manager_id = m.employee_id
+WHERE  e.hire_date < m.hire_date;
