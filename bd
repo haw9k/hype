@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION check_salary_increase()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF OLD.salary > NEW.salary THEN
+        RAISE EXCEPTION 'Sorry! Salary can not be decreased!';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_employees_salary_check
+    BEFORE UPDATE ON employees
+    FOR EACH ROW
+    EXECUTE FUNCTION check_salary_increase();
