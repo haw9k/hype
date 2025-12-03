@@ -443,5 +443,101 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+#Ferma
+def bigint_sqrt(n: int) -> int:
+    """Целочисленный корень."""
+    if n < 0:
+        raise ValueError("Negative number")
+    if n == 0:
+        return 0
+
+    x = n
+    y = (x + 1) // 2
+    while y < x:
+        x = y
+        y = (x + n // x) // 2
+    return x
+
+
+def is_prime(n: int) -> bool:
+    """Простая проверка для факторизации."""
+    if n < 2:
+        return False
+    if n % 2 == 0:
+        return n == 2
+    i = 3
+    while i * i <= n:
+        if n % i == 0:
+            return False
+        i += 2
+    return True
+
+
+def fermat_factor(n: int) -> tuple[int, int] | None:
+    """Находит один нетривиальный множитель методом Ферма."""
+    if n % 2 == 0:
+        return 2, n // 2
+
+    x = bigint_sqrt(n)
+    if x * x < n:
+        x += 1
+
+    while True:
+        t = x * x - n
+        if t >= 0:
+            y = bigint_sqrt(t)
+            if y * y == t:
+                a = x - y
+                b = x + y
+                if a > 1 and b > 1:
+                    return a, b
+        x += 1
+
+        # защита от бесконечного поиска при простом числе
+        if x - bigint_sqrt(n) > 200000:
+            return None
+
+
+def DecompositionFermaBigData(numbers: list[int]) -> list[int]:
+    results: list[int] = []
+
+    for n in numbers:
+        if n == 1:
+            continue
+
+        # Если простое — добавляем сразу
+        if is_prime(n):
+            results.append(n)
+            continue
+
+        # Ищем разложение по Ферма
+        factors = fermat_factor(n)
+
+        # если не удалось разложить — число простое
+        if factors is None:
+            results.append(n)
+            continue
+
+        a, b = factors
+
+        # Рекурсивное разложение
+        sub = DecompositionFermaBigData([a, b])
+        results.extend(sub)
+
+    return results
+
+
+def main():
+    number = 2 * 3 * 7 * 11 * 31 * 43 * 103
+    print(f"Число: {number}")
+
+    answer = DecompositionFermaBigData([number])
+    print(sorted(answer))
+
+
 if __name__ == "__main__":
     main()
