@@ -669,3 +669,84 @@ def main():
 
 if __name__ == "__main__":
     main()
+def bigint_sqrt(n: int) -> int:
+    """Целочисленный корень (аналог sqrt для BigInt из Dart)."""
+    if n < 0:
+        raise ValueError("Negative number")
+    if n == 0:
+        return 0
+
+    x = n
+    y = (x + 1) // 2
+    while y < x:
+        x = y
+        y = (x + n // x) // 2
+    return x
+
+
+def DecompositionFermaBigData(numbers: list[int]) -> list[int]:
+    answers: list[int] = []
+
+    for n in numbers:
+        # Если число чётное
+        if n % 2 == 0:
+            if n // 2 != 1:
+                answers.append(2)
+                answers.append(n // 2)
+            continue
+
+        # Ферма
+        x = bigint_sqrt(n) + 1
+        k = 1
+        i = 1
+
+        # В Dart: for(BigInt i = BigInt.one; i != numbers[j]; i = i + BigInt.one)
+        # В Python сделаем то же самое:
+        while i != n:
+            t = x * x - n
+            y = bigint_sqrt(t)
+
+            if i >= 100000 * k:
+                print(f"{k}00000 elements scanned")
+                k += 1
+
+            if y * y == t:
+                a = x - y
+                b = x + y
+
+                if b == n:
+                    answers.append(b)
+
+                if a != 1 and b != n and a * b == n:
+                    answers.append(a)
+                    answers.append(b)
+                    break
+
+            x += 1
+            i += 1
+
+    return answers
+
+
+def main():
+    number = 2 * 3 * 43 * 7 * 11 * 97 * 101
+    print(f"Число: {number}")
+
+    current_list_length = 1
+    prev_list_length = 0
+    count = 0
+
+    answer = DecompositionFermaBigData([number])
+
+    while current_list_length != prev_list_length and count < 30:
+        count += 1
+        new_answer = DecompositionFermaBigData(answer)
+        answer = new_answer
+        prev_list_length = current_list_length
+        current_list_length = len(answer)
+
+    print(answer)
+
+
+if __name__ == "__main__":
+    main()
