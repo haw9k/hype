@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0" version="29.1.1">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0" version="29.2.4">
   <diagram name="Страница — 1" id="L0QiBLYBVhSqk4HjT3AW">
-    <mxGraphModel dx="2060" dy="690" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3405" dy="1429" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -2616,7 +2616,7 @@
           <mxGeometry height="50" width="100" x="1459.38" y="7960" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-88" parent="1" style="rounded=0;whiteSpace=wrap;html=1;textShadow=0;" value="Источники данных" vertex="1">
-          <mxGeometry height="60" width="120" x="1198" y="7520" as="geometry" />
+          <mxGeometry height="60" width="120" x="1361.97" y="7450" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-94" edge="1" parent="1" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;curved=1;textShadow=0;">
           <mxGeometry relative="1" as="geometry">
@@ -2778,11 +2778,11 @@
           <mxGeometry height="30" width="60" x="1775.13" y="7090" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-140" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Уровень инфраструктуры" vertex="1">
-          <mxGeometry height="60" width="120" x="2119" y="6920" as="geometry" />
+          <mxGeometry height="60" width="120" x="1988.38" y="6890" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-160" edge="1" parent="1" source="mWtb9Tr5X5bjpMYU7-Is-141" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;textShadow=0;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="2350" y="6870" as="targetPoint" />
+            <mxPoint x="2219.38" y="6840" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-174" connectable="0" parent="mWtb9Tr5X5bjpMYU7-Is-160" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;rounded=0;" value="&lt;span style=&quot;text-align: start;&quot;&gt;Влияет на&lt;/span&gt;" vertex="1">
@@ -2791,19 +2791,19 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-141" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Сезонность" vertex="1">
-          <mxGeometry height="60" width="120" x="2119" y="6840" as="geometry" />
+          <mxGeometry height="60" width="120" x="1988.38" y="6810" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-142" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Стоимость" vertex="1">
-          <mxGeometry height="60" width="120" x="2119" y="7000" as="geometry" />
+          <mxGeometry height="60" width="120" x="1988.38" y="6970" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-143" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;" value="Безопасность" vertex="1">
-          <mxGeometry height="60" width="120" x="2119" y="7180" as="geometry" />
+          <mxGeometry height="60" width="120" x="1988.38" y="7150" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-144" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Требования к визе" vertex="1">
-          <mxGeometry height="60" width="120" x="2119" y="7090" as="geometry" />
+          <mxGeometry height="60" width="120" x="1988.38" y="7060" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-145" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Климатические условия региона" vertex="1">
-          <mxGeometry height="60" width="120" x="2119" y="6760" as="geometry" />
+          <mxGeometry height="60" width="120" x="1988.38" y="6730" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-147" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
@@ -2857,39 +2857,39 @@
           <mxGeometry height="60" width="120" x="1834.2600000000002" y="7630" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-159" parent="1" style="text;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;rounded=0;" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;зависит от&lt;/span&gt;" vertex="1">
-          <mxGeometry height="40" width="90" x="2294" y="7250" as="geometry" />
+          <mxGeometry height="40" width="90" x="2163.38" y="7220" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-161" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="2350" y="6890" as="sourcePoint" />
-            <mxPoint x="2350" y="6850" as="targetPoint" />
+            <mxPoint x="2219.38" y="6860" as="sourcePoint" />
+            <mxPoint x="2219.38" y="6820" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mWtb9Tr5X5bjpMYU7-Is-162" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
+        <mxCell id="mWtb9Tr5X5bjpMYU7-Is-162" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="mWtb9Tr5X5bjpMYU7-Is-165" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <Array as="points">
-              <mxPoint x="2390" y="6850" />
+              <mxPoint x="2259.38" y="6820" />
             </Array>
-            <mxPoint x="2350" y="6850" as="sourcePoint" />
-            <mxPoint x="2430" y="6850" as="targetPoint" />
+            <mxPoint x="2219.38" y="6820" as="sourcePoint" />
+            <mxPoint x="2299.38" y="6820" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mWtb9Tr5X5bjpMYU7-Is-163" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
+        <mxCell id="mWtb9Tr5X5bjpMYU7-Is-163" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="mWtb9Tr5X5bjpMYU7-Is-167" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="2350" y="6889.63" as="sourcePoint" />
-            <mxPoint x="2430" y="6889.63" as="targetPoint" />
+            <mxPoint x="2219.38" y="6859.63" as="sourcePoint" />
+            <mxPoint x="2299.38" y="6859.63" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-165" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Погодные условия" vertex="1">
-          <mxGeometry height="30" width="100" x="2430" y="6830" as="geometry" />
+          <mxGeometry height="30" width="100" x="2267" y="6805" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-167" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Наличие туристов и загруженность" vertex="1">
-          <mxGeometry height="30" width="110" x="2430" y="6870" as="geometry" />
+          <mxGeometry height="30" width="110" x="2267" y="6845" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-169" edge="1" parent="1" source="mWtb9Tr5X5bjpMYU7-Is-141" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.999;entryY=0.167;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;endArrow=classic;curved=1;textShadow=0;" target="mWtb9Tr5X5bjpMYU7-Is-142">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="2340" y="6950" />
+              <mxPoint x="2209.38" y="6920" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -2900,8 +2900,8 @@
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-175" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="2240" y="6850" as="sourcePoint" />
-            <mxPoint x="2430" y="6770" as="targetPoint" />
+            <mxPoint x="2109.38" y="6820" as="sourcePoint" />
+            <mxPoint x="2250" y="6760" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-186" connectable="0" parent="mWtb9Tr5X5bjpMYU7-Is-175" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;rounded=0;" value="&lt;span style=&quot;text-align: start;&quot;&gt;Основывается на&lt;/span&gt;" vertex="1">
@@ -2910,18 +2910,18 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-185" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Туристические циклы&amp;nbsp;" vertex="1">
-          <mxGeometry height="40" width="120" x="2430" y="6750" as="geometry" />
+          <mxGeometry height="40" width="120" x="2253.38" y="6740" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-187" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="2360" y="6800" as="sourcePoint" />
-            <mxPoint x="2240" y="6780" as="targetPoint" />
+            <mxPoint x="2229.38" y="6770" as="sourcePoint" />
+            <mxPoint x="2109.38" y="6750" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-190" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;exitX=0.25;exitY=1;exitDx=0;exitDy=0;textShadow=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="1216.12" y="7579" as="sourcePoint" />
-            <mxPoint x="1216.12" y="7750" as="targetPoint" />
+            <mxPoint x="1380.09" y="7509" as="sourcePoint" />
+            <mxPoint x="1380.09" y="7680" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-209" connectable="0" parent="mWtb9Tr5X5bjpMYU7-Is-190" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;rounded=0;" value="Основывается на" vertex="1">
@@ -2931,27 +2931,27 @@
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-192" edge="1" parent="1" style="endArrow=classic;startArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="1160" y="7669" as="sourcePoint" />
-            <mxPoint x="1260" y="7669" as="targetPoint" />
+            <mxPoint x="1323.97" y="7599" as="sourcePoint" />
+            <mxPoint x="1423.97" y="7599" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-193" edge="1" parent="1" style="endArrow=classic;startArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="1160" y="7749" as="sourcePoint" />
-            <mxPoint x="1260" y="7749" as="targetPoint" />
+            <mxPoint x="1323.97" y="7679" as="sourcePoint" />
+            <mxPoint x="1423.97" y="7679" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-194" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Рекомендации блогеров и экспертов" vertex="1">
-          <mxGeometry height="60" width="120" x="1260" y="7639" as="geometry" />
+          <mxGeometry height="60" width="120" x="1423.97" y="7569" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-195" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Отзывы предыдущих туристов" vertex="1">
-          <mxGeometry height="60" width="120" x="1040" y="7639" as="geometry" />
+          <mxGeometry height="60" width="120" x="1203.97" y="7569" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-196" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Фотографии и видео локаций" vertex="1">
-          <mxGeometry height="60" width="120" x="1260" y="7719" as="geometry" />
+          <mxGeometry height="60" width="120" x="1423.97" y="7649" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-197" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Рейтинги отелей и курортов" vertex="1">
-          <mxGeometry height="60" width="120" x="1040" y="7719" as="geometry" />
+          <mxGeometry height="60" width="120" x="1203.97" y="7649" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-202" edge="1" parent="1" style="endArrow=classic;startArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
@@ -3017,7 +3017,7 @@
             <mxPoint x="2149" y="7890" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mWtb9Tr5X5bjpMYU7-Is-238" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Конкретные даты поездки" vertex="1">
+        <mxCell id="mWtb9Tr5X5bjpMYU7-Is-238" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;font face=&quot;Times New Roman&quot; style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Конкретные даты поездки&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="120" x="2672" y="7590" as="geometry" />
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-239" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Учет праздничных дней" vertex="1">
@@ -3053,10 +3053,10 @@
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-247" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;shadow=0;textShadow=0;" value="Наличие отпусков" vertex="1">
           <mxGeometry height="60" width="120" x="2420" y="7460" as="geometry" />
         </mxCell>
-        <mxCell id="mWtb9Tr5X5bjpMYU7-Is-252" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;elbow=vertical;textShadow=0;" value="">
+        <mxCell id="mWtb9Tr5X5bjpMYU7-Is-252" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;elbow=vertical;textShadow=0;entryX=1.014;entryY=0.667;entryDx=0;entryDy=0;entryPerimeter=0;" target="mWtb9Tr5X5bjpMYU7-Is-141" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
             <Array as="points">
-              <mxPoint x="2560" y="7000" />
+              <mxPoint x="2420" y="7020" />
             </Array>
             <mxPoint x="2390" y="7490" as="sourcePoint" />
             <mxPoint x="2240" y="6880" as="targetPoint" />
@@ -3092,11 +3092,11 @@
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1230" y="8100" />
-              <mxPoint x="1230" y="8400" />
-              <mxPoint x="2550" y="8400" />
+              <mxPoint x="1230" y="8320" />
+              <mxPoint x="2550" y="8320" />
             </Array>
             <mxPoint x="1320" y="8100" as="sourcePoint" />
-            <mxPoint x="2550" y="8040" as="targetPoint" />
+            <mxPoint x="2550" y="8020" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mWtb9Tr5X5bjpMYU7-Is-264" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="Уровень комфорта" vertex="1">
@@ -3218,8 +3218,9 @@
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1739" y="8040" />
-              <mxPoint x="3130" y="8040" />
-              <mxPoint x="3130" y="7030" />
+              <mxPoint x="2870" y="8040" />
+              <mxPoint x="2870" y="7030" />
+              <mxPoint x="2108" y="7030" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -3237,44 +3238,46 @@
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-56" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Пакет" vertex="1">
           <mxGeometry height="30" width="60" x="-91.54999999999995" y="7679" as="geometry" />
         </mxCell>
-        <mxCell id="WGPL3gaZw4_gLf_lb_zM-62" edge="1" parent="1" source="WGPL3gaZw4_gLf_lb_zM-61" style="edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;">
+        <mxCell id="WGPL3gaZw4_gLf_lb_zM-62" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="790" y="7259.666666666667" as="targetPoint" />
+            <mxPoint x="1191.88" y="7260" as="sourcePoint" />
+            <mxPoint x="963" y="7259.666666666667" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-71" edge="1" parent="1" source="WGPL3gaZw4_gLf_lb_zM-61" style="edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="930" y="8271" />
+              <mxPoint x="1079" y="8271" />
+              <mxPoint x="1230" y="8271" />
             </Array>
             <mxPoint x="1230" y="8270" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-61" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="кол-во участников поездки" vertex="1">
-          <mxGeometry height="60" width="120" x="870" y="7230" as="geometry" />
+          <mxGeometry height="60" width="120" x="1018.88" y="7230" as="geometry" />
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-66" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="один" vertex="1">
-          <mxGeometry height="60" width="120" x="648.88" y="7190" as="geometry" />
+          <mxGeometry height="60" width="120" x="819.38" y="7190" as="geometry" />
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-67" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;textShadow=0;" value="семейный" vertex="1">
-          <mxGeometry height="60" width="120" x="648.88" y="7270" as="geometry" />
+          <mxGeometry height="60" width="120" x="819.38" y="7270" as="geometry" />
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-68" edge="1" parent="1" style="endArrow=none;html=1;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="790" y="7310" as="sourcePoint" />
-            <mxPoint x="790" y="7210" as="targetPoint" />
+            <mxPoint x="960.5" y="7310" as="sourcePoint" />
+            <mxPoint x="960.5" y="7210" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-69" edge="1" parent="1" style="endArrow=classic;html=1;entryX=1.009;entryY=0.333;entryDx=0;entryDy=0;entryPerimeter=0;" target="WGPL3gaZw4_gLf_lb_zM-66" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="790" y="7210" as="sourcePoint" />
-            <mxPoint x="1280" y="7320" as="targetPoint" />
+            <mxPoint x="960.5" y="7210" as="sourcePoint" />
+            <mxPoint x="1450.5" y="7320" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-70" edge="1" parent="1" style="endArrow=classic;html=1;entryX=1.009;entryY=0.633;entryDx=0;entryDy=0;entryPerimeter=0;" target="WGPL3gaZw4_gLf_lb_zM-67" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="790" y="7308" as="sourcePoint" />
-            <mxPoint x="800" y="7313" as="targetPoint" />
+            <mxPoint x="960.5" y="7308" as="sourcePoint" />
+            <mxPoint x="970.5" y="7313" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-72" parent="1" style="shape=dataStorage;whiteSpace=wrap;html=1;fixedSize=1;rotation=-90;" value="" vertex="1">
@@ -3408,10 +3411,10 @@
           <mxGeometry height="60" width="120" x="1693.913043478261" y="6600.000000000001" as="geometry" />
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-117" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="удаленность от цивилизации" vertex="1">
-          <mxGeometry height="60" width="120" x="1780.0000000000005" y="6370" as="geometry" />
+          <mxGeometry height="60" width="120" x="1768.6300000000006" y="6470" as="geometry" />
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-119" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="противопоказания" vertex="1">
-          <mxGeometry height="60" width="120" x="1464.88" y="7510.002608695652" as="geometry" />
+          <mxGeometry height="60" width="120" x="1554.88" y="7490.002608695652" as="geometry" />
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-122" edge="1" parent="1" style="endArrow=classic;html=1;" target="WGPL3gaZw4_gLf_lb_zM-123" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
