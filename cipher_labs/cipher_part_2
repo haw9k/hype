@@ -543,7 +543,7 @@ if __name__ == "__main__":
     main()
 1076259412231815019865125804167605592839315742411540973272839
 
-#eliptic_curve
+#elliptic_curve
 import random
 import math
 
