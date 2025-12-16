@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.0.0" version="29.2.7">
   <diagram name="Страница — 1" id="L0QiBLYBVhSqk4HjT3AW">
-    <mxGraphModel dx="1820" dy="1160" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1820" dy="1186" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -3427,6 +3427,33 @@
         </mxCell>
         <mxCell id="WGPL3gaZw4_gLf_lb_zM-123" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="конкретное место" vertex="1">
           <mxGeometry height="60" width="120" x="1440" y="8250" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Требования к визе" vertex="1">
+          <mxGeometry height="60" width="120" x="3150" y="6580" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="&lt;font face=&quot;Times New Roman&quot; style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Конкретные даты поездки&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="3150.88" y="6690" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Бюджет" vertex="1">
+          <mxGeometry height="60" width="120" x="3153.95" y="6810" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Тип проживания" vertex="1">
+          <mxGeometry height="60" width="120" x="3150" y="6920" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="пакет" vertex="1">
+          <mxGeometry height="60" width="120" x="3150.88" y="7030" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="кол-во участников поездки" vertex="1">
+          <mxGeometry height="60" width="120" x="3240" y="7230" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Цель отдыха" vertex="1">
+          <mxGeometry height="60" width="120" x="3250" y="7150" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="конкретное место" vertex="1">
+          <mxGeometry height="60" width="120" x="3290" y="7410" as="geometry" />
+        </mxCell>
+        <mxCell id="PADzC5kgu39YPKEORIxL-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=11;labelBackgroundColor=default;textShadow=0;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Виды отдыха" vertex="1">
+          <mxGeometry height="60" width="120" x="3400" y="6860" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
