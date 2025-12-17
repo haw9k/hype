@@ -704,156 +704,185 @@ if __name__ == '__main__':
 
 
 #elliptic_curve
+# elliptic_curve_correct.py
 import random
 import math
 
+# =========================================================
+# Miller–Rabin (нормальный вероятностный тест простоты)
+# =========================================================
 
-# ========================= Rabin–Miller =============================
-
-class RabinMiller:
-    def simple_number(self, p):
-        while True:
-            print("Тестируемое число", p)
-            b = self.power_of_two(p - 1)
-            m = (p - 1) // (2 ** b)
-
-            if not self.rabin_miller(p, b, m):
-                print("Тест не пройден, число составное")
-                if p % 2 == 0:
-                    p += 1
-                else:
-                    p += 2
-            else:
-                return p
-
-    def power_of_two(self, number):
-        power = 0
-        while number % 2 == 0:
-            number //= 2
-            power += 1
-        return power
-
-    def rabin_miller(self, number, b, m):
-        a = 2 + random.randint(0, number // 2)
-        print(a)
-
-        for j in range(0, b + 1):
-            z = self.exponentiation(a, (2 ** j) * m, number)
-            if z == number - 1:
-                return True
-            elif z == 1 and j == 0:
-                return True
+def is_probable_prime(n, k=10):
+    if n in (2, 3):
+        return True
+    if n < 2 or n % 2 == 0:
         return False
 
-    def exponentiation(self, base, exp, mod):
-        result = 1
-        a = base % mod
+    # n-1 = d * 2^s
+    d = n - 1
+    s = 0
+    while d % 2 == 0:
+        d //= 2
+        s += 1
 
-        while exp > 0:
-            if exp % 2 == 1:
-                result = (result * a) % mod
-            a = (a * a) % mod
-            exp //= 2
-        return result
+    for _ in range(k):
+        a = random.randrange(2, n - 1)
+        x = pow(a, d, n)
+        if x in (1, n - 1):
+            continue
+        for __ in range(s - 1):
+            x = (x * x) % n
+            if x == n - 1:
+                break
+        else:
+            return False
+    return True
 
 
-# ======================= Elliptic curve part ==========================
+def next_prime(start):
+    p = start if start % 2 else start + 1
+    while True:
+        print("Тестируемое число", p)
+        if is_probable_prime(p):
+            return p
+        print("Тест не пройден, число составное")
+        p += 2
 
-def evklid(a, m):
-    x0, x1 = 1, 0
-    y0, y1 = 0, 1
-    A, B = abs(a), abs(m)
 
-    while B != 0:
-        q = A // B
-        x0, x1 = x1, x0 - q * x1
-        y0, y1 = y1, y0 - q * y1
-        A, B = B, A % B
+# =========================================================
+# Эллиптическая кривая: y^2 = x^3 + x (mod p)
+# =========================================================
 
-    inv = x0 % m
-    print(f"Обратный элемент для {a} = {inv}")
-    return inv
+O = None  # точка на бесконечности
+
+def inv_mod(a, p):
+    a %= p
+    if a == 0:
+        raise ZeroDivisionError("Обратного элемента не существует")
+    return pow(a, p - 2, p)  # p простое
 
 
 def add_points(P, Q, p):
+    # Работаем с точкой на бесконечности правильно
+    if P is None:
+        return Q
+    if Q is None:
+        return P
+
     x1, y1 = P
     x2, y2 = Q
 
+    # P + (-P) = O
     if x1 == x2 and (y1 + y2) % p == 0:
-        return (0, 0)
+        return None
 
-    if x1 != x2:
-        numerator = (y2 - y1) % p
-        denominator = (x2 - x1) % p
-        lam = (numerator * evklid(denominator, p)) % p
+    if P != Q:
+        lam = ((y2 - y1) * inv_mod(x2 - x1, p)) % p
     else:
-        numerator = (3 * x1 * x1 + 1) % p
-        denominator = (2 * y1) % p
-        if denominator == 0:
-            return (0, 0)
-        lam = (numerator * evklid(denominator, p)) % p
+        # удвоение: lam = (3x^2 + 1) / (2y)
+        if y1 % p == 0:
+            return None
+        lam = ((3 * x1 * x1 + 1) * inv_mod(2 * y1, p)) % p
 
     x3 = (lam * lam - x1 - x2) % p
     y3 = (lam * (x1 - x3) - y1) % p
+    return (x3, y3)
 
-    return (x3 % p, y3 % p)
+
+def mul(k, P, p):
+    """Скалярное умножение (double-and-add)."""
+    R = None
+    A = P
+    while k > 0:
+        if k & 1:
+            R = add_points(R, A, p)
+        A = add_points(A, A, p)
+        k >>= 1
+    return R
+
+
+def on_curve(P, p):
+    if P is None:
+        return True
+    x, y = P
+    return (y*y - (x*x*x + x)) % p == 0
 
 
 def find_point(p):
+    """Ищем любую точку на кривой перебором (просто и понятно)."""
     for x in range(1, p):
-        right = (x**3 + x) % p
-        for y in range(p):
-            if (y*y) % p == right and y != 0:
+        rhs = (x*x*x + x) % p
+        for y in range(1, p):
+            if (y*y) % p == rhs:
                 return (x, y)
-    return (0, 0)
+    return None
 
 
-def hose(p):
-    return p + 1 - int(math.sqrt(p)) <= p + 1 <= p + 1 + int(math.sqrt(p))
+# =========================================================
+# #E(F_p) и проверка Хассе
+# =========================================================
+
+def legendre_symbol(a, p):
+    """(a|p) = -1,0,1"""
+    a %= p
+    if a == 0:
+        return 0
+    t = pow(a, (p - 1) // 2, p)
+    return -1 if t == p - 1 else 1
 
 
-# =========================== main =====================================
+def count_points(p):
+    """
+    #E(F_p) = p + 1 + sum_{x=0..p-1} (x^3 + x | p)
+    """
+    s = 0
+    for x in range(p):
+        rhs = (x*x*x + x) % p
+        s += legendre_symbol(rhs, p)
+    return p + 1 + s
+
+
+def hasse_check(N, p):
+    bound = 2 * math.isqrt(p)
+    return abs(N - (p + 1)) <= bound, bound
+
+
+# =========================================================
+# main
+# =========================================================
 
 def main():
-    start = 131910
-    rabin = RabinMiller()
+    start = 1613
+    p = next_prime(start)
+    print("\nПростое число:", p)
 
-    p = rabin.simple_number(start)
-    print("Простое число:", p)
+    # порядок точки на бесконечности
+    print("Порядок точки O (бесконечности):", 1)
 
-    point = find_point(p)
-    x, y = point
-    print(f"p={point}")
+    P = find_point(p)
+    print("Найдена точка P:", P)
+    print("P на кривой?", on_curve(P, p))
 
-    final_point = [x, y]
-    exponention = {2, 4, 16, 128}
-
-    P = point
-    for i in [2, 4, 8, 16, 32, 64, 128]:
-        if P == (0, 0):
-            print("Достигнута бесконечно удаленная точка")
-            print("Порядок точки:", i)
+    # Удвоения: 2P,4P,...,128P
+    Q = P
+    for n in [2, 4, 8, 16, 32, 64, 128]:
+        Q = add_points(Q, Q, p)
+        print(f"{n}P = {Q}")
+        if Q is None:
+            print("Достигнута точка на бесконечности (O). Порядок точки делит", n)
             break
 
-        P = add_points(P, P, p)
-        if i in exponention:
-            final_point = add_points(P, final_point, p)
+    # 151P (правильно)
+    P151 = mul(151, P, p)
+    print("151P =", P151)
 
-        print(f"{i}P = {P}")
-
-    print("151P =", final_point)
-    print("Порядок линии:", p + 1)
-
-    if hose(p):
-        print("Теорема Хоссе выполняется")
-    else:
-        print("Теорема Хоссе не выполняется")
+    # Хассе (правильно: через N = #E(F_p))
+    N = count_points(p)
+    ok, bound = hasse_check(N, p)
+    print("#E(F_p) =", N)
+    print("p+1 =", p + 1, " |N-(p+1)| =", abs(N - (p + 1)), " <= 2*sqrt(p) =", bound)
+    print("Теорема Хассе выполняется?", ok)
 
 
 if __name__ == "__main__":
     main()
-
-
-
-            
-    
