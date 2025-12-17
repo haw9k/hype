@@ -543,6 +543,166 @@ if __name__ == "__main__":
     main()
 1076259412231815019865125804167605592839315742411540973272839
 
+#ferma_kotoroe_rabotaet
+import math
+import random
+
+def fast_multiplication(base, power, modulo):
+    DO_LOG = False
+    result = 1
+    k = 1
+    while power > 0:
+        s = power % 2
+        if s == 1:
+            result = (result * base) % modulo
+        if DO_LOG: print(f'{k=}, {base=}, {power=}, {s=}, {result=}')
+        base = (base * base) % modulo
+        power = (power - s) // 2
+        k += 1
+    return result
+
+def isqrt(n: int) -> int:
+    if n == 0:
+        return 0
+
+    x = n
+    y = (x + 1) // 2
+
+    while y < x:
+        x = y
+        y = (x + n // x) // 2
+
+    return x
+
+
+def is_perfect_square(n: int) -> tuple[bool, int]:
+    if n < 0:
+        return (False, 0)
+
+    root = isqrt(n)
+    if root * root == n:
+        return (True, root)
+    return (False, root)
+
+
+def fermat_factorization(n: int):
+    DO_LOG = False
+
+    if n % 2 == 0:
+        if DO_LOG: print(f' [DEBUG] n четное, возвращаем (2, {n // 2})')
+        return (2, n // 2)
+
+    for i in range(3, 1000000, 2):
+        if n % i == 0:
+            if DO_LOG: print(f' [DEBUG] пробное деление {(i, n // i)}')
+            return (i, n // i)
+
+    a = isqrt(n)
+    if a * a < n:
+        a += 1
+
+    if DO_LOG: print(f' [DEBUG] начинаем ферма с a = ceil(sqrt({n})) = {a}')
+
+    max_iterations = 10_000_000
+    b_squared = a * a - n
+
+    for iteration in range(max_iterations):
+        is_perfect, b = is_perfect_square(b_squared)
+
+        if iteration % 10000 == 0:
+            print(a + b, a - b)
+
+        if is_perfect:
+            p = a + b
+            q = a - b
+            if DO_LOG: print(f' [DEBUG] найденные делители: p={p}, q={q}')
+            if p * q == n:
+                return (p, q)
+
+        a += 1
+        b_squared += a*a - n
+
+
+    if DO_LOG: print(f' [DEBUG] вышли за пределы по итерациям')
+    return (None, None)
+
+
+def find_all_factors(n: int):
+    DO_LOG = False
+
+    if DO_LOG: print(f' [DEBUG] ищем все делители {n}')
+
+    if n == 1:
+        return []
+
+    if n == 2:
+        return [2]
+
+    if rabin_miller_test(n, 10):
+        if DO_LOG: print(f' [DEBUG] {n} простое')
+        return [n]
+
+    p, q = fermat_factorization(n)
+
+    if p is None:
+        print(f" [ERROR] ошибка метода ферма")
+        return [n]
+
+    factors = []
+    factors.extend(find_all_factors(p))
+    factors.extend(find_all_factors(q))
+
+    return sorted(factors)
+
+def rabin_miller_test(p: int, k: int = 5):
+    DO_LOG = False
+    if p == 2 or p == 3:
+        return True
+    if p < 2 or p % 2 == 0:
+        return False
+
+    p_bin = bin(p - 1)[2:]
+    b = 0
+    for i in range(len(p_bin) - 1, -1, -1):
+        if p_bin[i] == '0':
+            b += 1
+        else:
+            break
+
+    m = (p - 1) // (2 ** b)
+    if DO_LOG: print(f' [DEBUG] p={p}, p-1={p-1}, b={b}, m={m}')
+
+    for _ in range(k):
+        a = random.randint(2, p - 2)
+        if DO_LOG: print(f' [DEBUG] Round: a={a}')
+
+        z = fast_multiplication(a, m, p)
+        if DO_LOG: print(f' [DEBUG] z = a^m mod p = {z}')
+
+        if z == 1 or z == p - 1:
+            if DO_LOG: print(f' [DEBUG] z={z}, continuing to next round')
+            continue
+
+        for _ in range(b - 1):
+            z = fast_multiplication(z, 2, p)
+            if DO_LOG: print(f' [DEBUG] Squaring: z={z}')
+            if z == p - 1:
+                break
+        else:
+            if DO_LOG: print(f' [DEBUG] Never found p-1, p is composite')
+            return False
+
+    return True
+
+if __name__ == '__main__':
+   item=1076259412231815019865125804167605592839315742411540973272839;
+   print(f' {find_all_factors(item)}')
+
+
+
+
+
+
 #elliptic_curve
 import random
 import math
