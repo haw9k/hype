@@ -1,0 +1,26 @@
+# --- Gradle ---
+.gradle/
+build/
+*/build/
+
+# --- Local конфиги (SDK путь) ---
+local.properties
+
+# --- Android Studio / IntelliJ ---
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# --- Cache / Generated ---
+.cxx/
+.externalNativeBuild/
+captures/
+out/
+
+
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log

@@ -1,0 +1,42 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/galaxiesListFragment">
+
+    <fragment
+        android:id="@+id/galaxiesListFragment"
+        android:name="com.example.spaceapp.ui.fragments.GalaxiesListFragment"
+        android:label="Галактики">
+        <action
+            android:id="@+id/action_galaxies_to_planets"
+            app:destination="@id/planetsListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/planetsListFragment"
+        android:name="com.example.spaceapp.ui.fragments.PlanetsListFragment"
+        android:label="Планеты">
+        <argument
+            android:name="galaxyId"
+            app:argType="long" />
+        <argument
+            android:name="galaxyName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_planets_to_expeditions"
+            app:destination="@id/expeditionsHostFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/expeditionsHostFragment"
+        android:name="com.example.spaceapp.ui.fragments.ExpeditionsHostFragment"
+        android:label="Экспедиции">
+        <argument
+            android:name="planetId"
+            app:argType="long" />
+        <argument
+            android:name="planetName"
+            app:argType="string" />
+    </fragment>
+
+</navigation>
