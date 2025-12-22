@@ -1,0 +1,164 @@
+# recommender.py
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Optional, Dict, Any, List
+
+from rdflib import Graph
+from queries import PREFIXES
+
+
+@dataclass
+class Filters:
+    vacation_type: Optional[str] = None
+    season: Optional[str] = None
+    cost: Optional[str] = None
+    visa: Optional[str] = None
+    infrastructure: Optional[str] = None
+    transport: Optional[str] = None
+    accommodation: Optional[str] = None
+
+    # доп. фильтры
+    sea: Optional[str] = None                 # distanceToSea
+    sanatorium: Optional[str] = None          # hasSanatorium
+    sights: Optional[str] = None              # hasSights
+    excursion_duration: Optional[str] = None  # hasExcursionDuration
+
+
+def load_graph(path: str) -> Graph:
+    g = Graph()
+    p = Path(path).resolve()
+    if not p.exists():
+        raise FileNotFoundError(f"OWL-файл не найден: {p}")
+
+    # ВАЖНО: читаем как файл, а не "URL", иначе Windows путь иногда ломается
+    with p.open("rb") as f:
+        g.parse(file=f, format="xml")
+    return g
+
+
+def _iri(local_name: str) -> str:
+    # "Cost_Low" -> "v:Cost_Low"
+    return f"v:{local_name}"
+
+
+def build_recommend_query(f: Filters) -> str:
+    where = [
+        "?dest a v:Destination ;",
+        "      v:destinationName ?name .",
+    ]
+
+    # базовые фильтры
+    if f.vacation_type:
+        where.append(f"  ?dest v:hasVacationType {_iri(f.vacation_type)} .")
+    if f.season:
+        where.append(f"  ?dest v:bestSeason {_iri(f.season)} .")
+    if f.cost:
+        where.append(f"  ?dest v:hasCostLevel {_iri(f.cost)} .")
+    if f.visa:
+        where.append(f"  ?dest v:hasVisaRequirement {_iri(f.visa)} .")
+    if f.infrastructure:
+        where.append(f"  ?dest v:hasInfrastructure {_iri(f.infrastructure)} .")
+    if f.transport:
+        where.append(f"  ?dest v:hasTransportAvailability {_iri(f.transport)} .")
+    if f.accommodation:
+        where.append(f"  ?dest v:hasAccommodationType {_iri(f.accommodation)} .")
+
+    # доп. фильтры (только если выбраны)
+    if f.sea:
+        where.append(f"  ?dest v:distanceToSea {_iri(f.sea)} .")
+    if f.sanatorium:
+        where.append(f"  ?dest v:hasSanatorium {_iri(f.sanatorium)} .")
+    if f.sights:
+        where.append(f"  ?dest v:hasSights {_iri(f.sights)} .")
+    if f.excursion_duration:
+        where.append(f"  ?dest v:hasExcursionDuration {_iri(f.excursion_duration)} .")
+
+    # ИСПРАВЛЕНИЕ: создаем строку условий ДО использования в f-строке
+    where_clause = '\n  '.join(where)
+    
+    return PREFIXES + f"""
+SELECT DISTINCT ?dest ?name
+WHERE {{
+  {where_clause}
+}}
+ORDER BY LCASE(STR(?name))
+"""
+
+
+def recommend(g: Graph, f: Filters) -> List[Dict[str, Any]]:
+    q = build_recommend_query(f)
+    rows = g.query(q)
+    return [{"dest_iri": str(r.dest), "name": str(r.name)} for r in rows]
+
+
+def explain_destination(g: Graph, dest_iri: str) -> Dict[str, Any]:
+    # ВАЖНО: в обязательной части только то, что есть у ВСЕХ направлений
+    q = PREFIXES + f"""
+SELECT ?name
+       (GROUP_CONCAT(DISTINCT ?vtLabel; separator=", ") AS ?types)
+       (GROUP_CONCAT(DISTINCT ?seasonLabel; separator=", ") AS ?seasons)
+       ?costLabel ?visaLabel ?infraLabel ?transportLabel
+       (GROUP_CONCAT(DISTINCT ?accLabel; separator=", ") AS ?accommodation)
+
+       (SAMPLE(?seaLabel) AS ?sea)
+       (SAMPLE(?sanLabel) AS ?sanatorium)
+       (SAMPLE(?sightsLabel) AS ?sights)
+       (SAMPLE(?excLabel) AS ?excursion)
+WHERE {{
+  <{dest_iri}> v:destinationName ?name ;
+               v:hasVacationType ?vt ;
+               v:bestSeason ?season ;
+               v:hasCostLevel ?cost ;
+               v:hasVisaRequirement ?visa ;
+               v:hasInfrastructure ?infra ;
+               v:hasTransportAvailability ?transport ;
+               v:hasAccommodationType ?acc .
+
+  OPTIONAL {{ ?vt rdfs:label ?vtLabel FILTER(lang(?vtLabel)="ru") }}
+  OPTIONAL {{ ?season rdfs:label ?seasonLabel FILTER(lang(?seasonLabel)="ru") }}
+  OPTIONAL {{ ?cost rdfs:label ?costLabel FILTER(lang(?costLabel)="ru") }}
+  OPTIONAL {{ ?visa rdfs:label ?visaLabel FILTER(lang(?visaLabel)="ru") }}
+  OPTIONAL {{ ?infra rdfs:label ?infraLabel FILTER(lang(?infraLabel)="ru") }}
+  OPTIONAL {{ ?transport rdfs:label ?transportLabel FILTER(lang(?transportLabel)="ru") }}
+  OPTIONAL {{ ?acc rdfs:label ?accLabel FILTER(lang(?accLabel)="ru") }}
+
+  OPTIONAL {{
+    <{dest_iri}> v:distanceToSea ?seaVal .
+    ?seaVal rdfs:label ?seaLabel FILTER(lang(?seaLabel)="ru")
+  }}
+  OPTIONAL {{
+    <{dest_iri}> v:hasSanatorium ?sanVal .
+    ?sanVal rdfs:label ?sanLabel FILTER(lang(?sanLabel)="ru")
+  }}
+  OPTIONAL {{
+    <{dest_iri}> v:hasSights ?sVal .
+    ?sVal rdfs:label ?sightsLabel FILTER(lang(?sightsLabel)="ru")
+  }}
+  OPTIONAL {{
+    <{dest_iri}> v:hasExcursionDuration ?eVal .
+    ?eVal rdfs:label ?excLabel FILTER(lang(?excLabel)="ru")
+  }}
+}}
+GROUP BY ?name ?costLabel ?visaLabel ?infraLabel ?transportLabel
+"""
+
+    rows = list(g.query(q))
+    if not rows:
+        return {"error": "Не найдено объяснение (проверь, что у направления заполнены обязательные поля)."}
+
+    r = rows[0]
+    return {
+        "name": str(r.name),
+        "types": str(r.types) if r.types else "",
+        "seasons": str(r.seasons) if r.seasons else "",
+        "cost": str(r.costLabel) if r.costLabel else "",
+        "visa": str(r.visaLabel) if r.visaLabel else "",
+        "infrastructure": str(r.infraLabel) if r.infraLabel else "",
+        "transport": str(r.transportLabel) if r.transportLabel else "",
+        "accommodation": str(r.accommodation) if r.accommodation else "",
+
+        "sea": str(r.sea) if r.sea else "",
+        "sanatorium": str(r.sanatorium) if r.sanatorium else "",
+        "sights": str(r.sights) if r.sights else "",
+        "excursion": str(r.excursion) if r.excursion else "",
+    }
