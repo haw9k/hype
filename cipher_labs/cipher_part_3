@@ -1,0 +1,600 @@
+# elliptic_curve_correct.py
+import random
+import math
+
+# =========================================================
+# Miller–Rabin (вероятностный тест простоты)
+# =========================================================
+
+def is_probable_prime(n, k=10):
+    if n in (2, 3):
+        return True
+    if n < 2 or n % 2 == 0:
+        return False
+
+    # n-1 = d * 2^s
+    d = n - 1
+    s = 0
+    while d % 2 == 0:
+        d //= 2
+        s += 1
+
+    for _ in range(k):
+        a = random.randrange(2, n - 1)
+        x = pow(a, d, n)
+        if x in (1, n - 1):
+            continue
+        for __ in range(s - 1):
+            x = (x * x) % n
+            if x == n - 1:
+                break
+        else:
+            return False
+    return True
+
+
+def next_prime(start):
+    p = start if start % 2 else start + 1
+    while True:
+        print("Тестируемое число", p)
+        if is_probable_prime(p):
+            return p
+        print("Тест не пройден, число составное")
+        p += 2
+
+
+# =========================================================
+# Эллиптическая кривая: y^2 = x^3 + x (mod p)
+# =========================================================
+
+O = None  # точка на бесконечности
+
+
+def inv_mod(a, p):
+    a %= p
+    if a == 0:
+        raise ZeroDivisionError("Обратного элемента не существует")
+    return pow(a, p - 2, p)  # p простое
+
+
+def add_points(P, Q, p):
+    if P is None:
+        return Q
+    if Q is None:
+        return P
+
+    x1, y1 = P
+    x2, y2 = Q
+
+    # P + (-P) = O
+    if x1 == x2 and (y1 + y2) % p == 0:
+        return None
+
+    if P != Q:
+        lam = ((y2 - y1) * inv_mod(x2 - x1, p)) % p
+    else:
+        # удвоение: lam = (3x^2 + 1) / (2y)
+        if y1 % p == 0:
+            return None
+        lam = ((3 * x1 * x1 + 1) * inv_mod(2 * y1, p)) % p
+
+    x3 = (lam * lam - x1 - x2) % p
+    y3 = (lam * (x1 - x3) - y1) % p
+    return (x3, y3)
+
+
+def mul(k, P, p):
+    """Скалярное умножение (double-and-add)."""
+    R = None
+    A = P
+    while k > 0:
+        if k & 1:
+            R = add_points(R, A, p)
+        A = add_points(A, A, p)
+        k >>= 1
+    return R
+
+
+def on_curve(P, p):
+    if P is None:
+        return True
+    x, y = P
+    return (y*y - (x*x*x + x)) % p == 0
+
+
+def find_point(p):
+    """Ищем любую точку на кривой перебором (как у тебя: без нулей)."""
+    for x in range(1, p):
+        rhs = (x*x*x + x) % p
+        for y in range(1, p):
+            if (y*y) % p == rhs:
+                return (x, y)
+    return None
+
+
+# =========================================================
+# #E(F_p) и проверка Хассе
+# =========================================================
+
+def legendre_symbol(a, p):
+    """(a|p) = -1,0,1"""
+    a %= p
+    if a == 0:
+        return 0
+    t = pow(a, (p - 1) // 2, p)
+    return -1 if t == p - 1 else 1
+
+
+def count_points(p):
+    """
+    #E(F_p) = p + 1 + sum_{x=0..p-1} (x^3 + x | p)
+    """
+    s = 0
+    for x in range(p):
+        rhs = (x*x*x + x) % p
+        s += legendre_symbol(rhs, p)
+    return p + 1 + s
+
+
+def hasse_check(N, p):
+    # оставляю в точности как у тебя (целое число)
+    bound = 2 * math.isqrt(p)
+    return abs(N - (p + 1)) <= bound, bound
+
+
+# =========================================================
+# Порядок точки P: ord(P) = минимальное n>0, что nP = O
+# =========================================================
+
+def factorize(n: int):
+    """Простая факторизация для небольших n."""
+    f = {}
+    d = 2
+    while d * d <= n:
+        while n % d == 0:
+            f[d] = f.get(d, 0) + 1
+            n //= d
+        d = 3 if d == 2 else d + 2
+    if n > 1:
+        f[n] = f.get(n, 0) + 1
+    return f
+
+
+def point_order(P, group_order, p):
+    """
+    Точный порядок точки P.
+    Если group_order = #E(F_p), то ord(P) | group_order.
+    """
+    if P is None:
+        return 1
+
+    ordP = group_order
+    fac = factorize(group_order)
+
+    for prime, exp in fac.items():
+        for _ in range(exp):
+            cand = ordP // prime
+            if mul(cand, P, p) is None:
+                ordP = cand
+            else:
+                break
+
+    return ordP
+
+
+# =========================================================
+# main
+# =========================================================
+
+def main():
+    start = 1613
+    p = next_prime(start)
+    print("\nПростое число:", p)
+
+    P = find_point(p)
+    print("Найдена точка P:", P)
+    print("P на кривой?", on_curve(P, p))
+
+    # Удвоения: 2P,4P,...,128P 
+    Q = P
+    for n in [2, 4, 8, 16, 32, 64, 128]:
+        Q = add_points(Q, Q, p)
+        print(f"{n}P = {Q}")
+        if Q is None:
+            print("Достигнута точка на бесконечности (O). Порядок точки делит", n)
+            break
+
+    # 151P
+    P151 = mul(151, P, p)
+    print("151P =", P151)
+
+    # #E(F_p) и Хассе
+    N = count_points(p)
+    ok, bound = hasse_check(N, p)
+    print("#E(F_p) =", N)
+    print("p+1 =", p + 1, " |N-(p+1)| =", abs(N - (p + 1)), " <= 2*sqrt(p) =", bound)
+    print("Теорема Хассе выполняется?", ok)
+
+    # Порядок точки P и где достигается бесконечность
+    ordP = point_order(P, N, p)
+    print("Бесконечно удаленная точка достигается при n =", ordP)
+
+
+
+if __name__ == "__main__":
+    main()
+#дискретное логорифмирование
+import math
+import random
+from typing import List, Dict, Tuple, Optional
+
+
+# =========================================================
+# Матем. утилиты
+# =========================================================
+
+def fast_pow_mod(base: int, power: int, modulo: int) -> int:
+    result = 1
+    base %= modulo
+    while power > 0:
+        if power & 1:
+            result = (result * base) % modulo
+        base = (base * base) % modulo
+        power >>= 1
+    return result
+
+
+def egcd(a: int, b: int) -> Tuple[int, int, int]:
+    if b == 0:
+        return a, 1, 0
+    g, x1, y1 = egcd(b, a % b)
+    return g, y1, x1 - (a // b) * y1
+
+
+def inv_mod(a: int, m: int) -> int:
+    a %= m
+    g, x, _ = egcd(a, m)
+    if g != 1:
+        raise ValueError(f"Нет обратного: gcd({a}, {m}) = {g}")
+    return x % m
+
+
+def factorize(n: int) -> Dict[int, int]:
+    f: Dict[int, int] = {}
+    d = 2
+    while d * d <= n:
+        while n % d == 0:
+            f[d] = f.get(d, 0) + 1
+            n //= d
+        d = 3 if d == 2 else d + 2
+    if n > 1:
+        f[n] = f.get(n, 0) + 1
+    return f
+
+
+def crt_pair(a1: int, m1: int, a2: int, m2: int) -> Tuple[int, int]:
+    g, s, t = egcd(m1, m2)
+    if g != 1:
+        raise ValueError("CRT: модули не взаимно просты")
+    x = (a1 * t * m2 + a2 * s * m1) % (m1 * m2)
+    return x, m1 * m2
+
+
+def crt_list(residues: List[int], moduli: List[int]) -> int:
+    x = residues[0] % moduli[0]
+    m = moduli[0]
+    for i in range(1, len(moduli)):
+        x, m = crt_pair(x, m, residues[i] % moduli[i], moduli[i])
+    return x
+
+
+def get_first_primes(count: int) -> List[int]:
+    primes: List[int] = []
+    num = 2
+    while len(primes) < count:
+        is_prime = True
+        for p in primes:
+            if p * p > num:
+                break
+            if num % p == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.append(num)
+        num += 1
+    return primes
+
+
+def factor_over_base(value: int, base: List[int]) -> Optional[List[int]]:
+    temp = value
+    alphas = [0] * len(base)
+    for i, p in enumerate(base):
+        while temp % p == 0:
+            temp //= p
+            alphas[i] += 1
+    return alphas if temp == 1 else None
+
+
+# =========================================================
+# BSGS (эталон)
+# =========================================================
+
+def bsgs_discrete_log(p: int, g: int, a: int) -> Optional[int]:
+    n = p - 1
+    a %= p
+    g %= p
+    if a == 1:
+        return 0
+
+    m = math.isqrt(n) + 1
+
+    gm = pow(g, m, p)
+    table: Dict[int, int] = {}
+    cur = 1
+    for i in range(m + 1):
+        if cur not in table:
+            table[cur] = i
+        cur = (cur * gm) % p
+
+    gj = 1
+    for j in range(m + 1):
+        val = (a * gj) % p
+        if val in table:
+            i = table[val]
+            return (i * m - j) % n
+        gj = (gj * g) % p
+
+    return None
+
+
+# =========================================================
+# Гаусс над полем GF(q) (q простое)
+# =========================================================
+
+def gauss_mod_prime(matrix: List[List[int]], q: int) -> Optional[List[int]]:
+    m = len(matrix)
+    n = len(matrix[0]) - 1
+    A = [row[:] for row in matrix]
+
+    row = 0
+    pivot_row_for_col = [-1] * n
+
+    for col in range(n):
+        pivot = None
+        for r in range(row, m):
+            if A[r][col] % q != 0:
+                pivot = r
+                break
+        if pivot is None:
+            continue
+
+        if pivot != row:
+            A[row], A[pivot] = A[pivot], A[row]
+
+        invp = inv_mod(A[row][col] % q, q)
+        for j in range(col, n + 1):
+            A[row][j] = (A[row][j] * invp) % q
+
+        for r in range(m):
+            if r == row:
+                continue
+            factor = A[r][col] % q
+            if factor != 0:
+                for j in range(col, n + 1):
+                    A[r][j] = (A[r][j] - factor * A[row][j]) % q
+
+        pivot_row_for_col[col] = row
+        row += 1
+        if row == m:
+            break
+
+    for r in range(m):
+        if all(A[r][c] % q == 0 for c in range(n)) and (A[r][n] % q != 0):
+            return None
+
+    x = [0] * n
+    for col in range(n):
+        r = pivot_row_for_col[col]
+        if r != -1:
+            x[col] = A[r][n] % q
+    return x
+
+
+# =========================================================
+# Index Calculus (упрощённый) для дискретного лога
+# =========================================================
+
+def index_calculus_dlog(
+    p: int,
+    g: int,
+    a: int,
+    t: int = 10,
+    extra: int = 8,
+    max_rel_attempts: int = 200000,
+    max_phase2_attempts: int = 200000,
+    seed: int = 1,
+    auto_trim_base: bool = True,   # <- главное
+) -> Optional[int]:
+
+    random.seed(seed)
+
+    n = p - 1
+    fac_n = factorize(n)
+    prime_moduli = sorted(fac_n.keys())
+
+    base_full = get_first_primes(t)
+
+    print("=== Метод исчисления индексов (index calculus) ===")
+    print(f"[1] Задача: найти x такое что g^x ≡ a (mod p)")
+    print(f"[2] Дано: p={p}, g={g}, a={a}")
+    print(f"[3] Группа: F_p* имеет порядок n=p-1={n}")
+    print("[4] Разложение n: " + " * ".join([f"{q}^{e}" for q, e in fac_n.items()]))
+    print(f"[5] Фактор-база S (t={t}): {base_full}")
+    print("[6] Фаза 1: собираем отношения g^k ≡ Π p_i^{alpha_i} (mod p), B-smooth по базе")
+
+    relations_full: List[List[int]] = []
+    ks: List[int] = []
+
+    needed = t + extra
+    tries = 0
+
+    while len(relations_full) < needed and tries < max_rel_attempts:
+        tries += 1
+        k = random.randint(1, n - 1)
+        val = fast_pow_mod(g, k, p)
+        alphas = factor_over_base(val, base_full)
+        if alphas is None:
+            continue
+
+        relations_full.append(alphas)
+        ks.append(k)
+
+        if len(relations_full) <= 5 or len(relations_full) % 10 == 0:
+            pretty = " * ".join([f"{base_full[i]}^{alphas[i]}" for i in range(t) if alphas[i] != 0]) or "1"
+            print(f"    [+] Relation #{len(relations_full)}: g^{k} ≡ {val} = {pretty}")
+
+    if len(relations_full) < needed:
+        print(f"[!] Не хватило отношений: {len(relations_full)}/{needed}. Увеличь max_rel_attempts или t.")
+        return None
+
+    print(f"[7] Отношений достаточно: {len(relations_full)} (попыток: {tries})")
+
+    # --- Автоподрезка базы: выкидываем простые, которые ни разу не встретились ---
+    base = base_full
+    relations = relations_full
+
+    if auto_trim_base:
+        used_cols = set()
+        for rel in relations_full:
+            for i, e in enumerate(rel):
+                if e != 0:
+                    used_cols.add(i)
+
+        if len(used_cols) < len(base_full):
+            keep = sorted(list(used_cols))
+            dropped = [base_full[i] for i in range(len(base_full)) if i not in used_cols]
+
+            base = [base_full[i] for i in keep]
+            relations = [[rel[i] for i in keep] for rel in relations_full]
+
+            print(f"[8] Автоподрезка базы: выкинули простые, которые не встретились в отношениях: {dropped}")
+            print(f"    Новая база (t={len(base)}): {base}")
+        else:
+            print("[8] Автоподрезка базы: ничего не выкинули (все простые встретились).")
+    else:
+        print("[8] Автоподрезка отключена.")
+
+    t2 = len(base)
+
+    print("[9] Строим систему: Σ alpha_i * log(p_i) ≡ k (mod n)")
+    print(f"    n составное, решаем по простым модулям {prime_moduli} и склеиваем CRT.")
+
+    matrix = [relations[i] + [ks[i]] for i in range(len(relations))]
+
+    logs_mod_q: Dict[int, Dict[int, int]] = {}
+
+    for q in prime_moduli:
+        print(f"\n[10] Решаем систему по модулю q={q} (поле GF({q}))")
+        mat_q = [[x % q for x in row] for row in matrix]
+        sol = gauss_mod_prime(mat_q, q)
+        if sol is None:
+            print(f"    [!] Система противоречива по модулю {q}. Поменяй seed/увеличь extra.")
+            return None
+
+        logs_mod_q[q] = {base[i]: sol[i] % q for i in range(t2)}
+        show = ", ".join([f"log({base[i]})={sol[i] % q}" for i in range(min(t2, 6))])
+        print(f"    [OK] Решение по модулю {q}: {show} ...")
+
+    print(f"\n[11] Склеиваем CRT: получаем log_g(p_i) (mod {n})")
+    logs: Dict[int, int] = {}
+    for pi in base:
+        residues = [logs_mod_q[q][pi] for q in prime_moduli]
+        logs[pi] = crt_list(residues, prime_moduli) % n
+
+    show2 = ", ".join([f"log({base[i]})={logs[base[i]]}" for i in range(min(t2, 6))])
+    print(f"     Примеры логов (mod {n}): {show2} ...")
+
+    print("\n[12] Проверяем логи базы: g^{log(pi)} ≡ pi (mod p)")
+    for pi in base[:min(10, len(base))]:
+        lhs = fast_pow_mod(g, logs[pi], p)
+        print(f"     g^{logs[pi]} mod p = {lhs}, ожидаем {pi} -> {lhs == pi}")
+
+    # --- Phase 2 ---
+    print("\n[13] Фаза 2: ищем k, чтобы a*g^k (mod p) разложилось по базе")
+    for _ in range(max_phase2_attempts):
+        k = random.randint(1, n - 1)
+        val = (a * fast_pow_mod(g, k, p)) % p
+        betas = factor_over_base(val, base)
+        if betas is None:
+            continue
+
+        pretty = " * ".join([f"{base[i]}^{betas[i]}" for i in range(t2) if betas[i] != 0]) or "1"
+        print(f"    [+] Нашли: a*g^{k} ≡ {val} = {pretty}")
+
+        x = 0
+        for i, pi in enumerate(base):
+            if betas[i]:
+                x = (x + betas[i] * logs[pi]) % n
+        x = (x - k) % n
+
+        check = fast_pow_mod(g, x, p)
+        print(f"\n[14] Получили x = {x}")
+        print(f"     Проверка: g^x mod p = {check}, ожидаем a={a} -> {check == a}")
+
+        if check == a:
+            print("\n=== Итог (что произошло) ===")
+            print(f"- Собрали отношения для гладких (B-smooth) значений g^k.")
+            print(f"- Решили линейную систему для log_g(простых из базы) по модулю простых делителей {prime_moduli}.")
+            print(f"- Склеили решения CRT, получили логи по модулю n={n}.")
+            print(f"- Нашли гладкое представление a*g^k и вычислили x = log_g(a).")
+            print(f"=> Ответ: x={x}, то есть {g}^{x} ≡ {a} (mod {p}).")
+            return x
+
+    print("[!] Во второй фазе не нашли гладкое представление a*g^k. Увеличь max_phase2_attempts или уменьши базу.")
+    return None
+
+
+# =========================================================
+# main
+# =========================================================
+
+def main():
+    p = 263
+    g = 7
+    a = 19
+
+    print("Параметры:")
+    print(f"p={p}, g={g}, a={a}")
+    print(f"Проверка: a^(p-1) mod p = {fast_pow_mod(a, p - 1, p)} (должно быть 1)")
+    print()
+
+    print("=== BSGS (проверочный метод) ===")
+    x_bsgs = bsgs_discrete_log(p, g, a)
+    print(f"BSGS нашёл x = {x_bsgs}")
+    print(f"Проверка: {g}^{x_bsgs} mod {p} = {fast_pow_mod(g, x_bsgs, p)}")
+    print()
+
+    x_ic = index_calculus_dlog(
+        p=p, g=g, a=a,
+        t=10, extra=8,
+        max_rel_attempts=200000,
+        max_phase2_attempts=200000,
+        seed=1,
+        auto_trim_base=True
+    )
+
+    print("\n=== Финальная сверка ===")
+    if x_ic is None:
+        print("Index calculus не смог получить ответ с заданными параметрами.")
+        print(f"Но BSGS ответ: x={x_bsgs}")
+        return
+
+    print(f"Index calculus: x={x_ic}")
+    print(f"BSGS:          x={x_bsgs}")
+    print(f"Проверка: g^x mod p = {fast_pow_mod(g, x_ic, p)} (должно быть {a})")
+    n = p - 1
+    print(f"Разница (mod n): (x_ic - x_bsgs) mod {n} = {(x_ic - x_bsgs) % n}")
+
+
+if __name__ == "__main__":
+    main()
