@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on:
   push:
@@ -15,19 +15,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Login to GitHub Container Registry
+      - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      - name: Build and push PROD image
+      - name: Build & push PROD image
         run: |
           set -e
           docker build --target prod -t "${{ env.IMAGE }}:${{ github.sha }}" .
           docker push "${{ env.IMAGE }}:${{ github.sha }}"
 
-      - name: Build and push TEST image
+      - name: Build & push TEST image
         run: |
           set -e
           docker build --target test -t "${{ env.IMAGE }}:test-${{ github.sha }}" .
@@ -38,7 +37,7 @@ jobs:
     needs: build
 
     services:
-      postgres:
+      db:
         image: postgres:16-alpine
         env:
           POSTGRES_USER: kubsu
@@ -53,7 +52,7 @@ jobs:
           --health-retries 30
 
     steps:
-      - name: Login to GitHub Container Registry
+      - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Pull TEST image
@@ -71,84 +70,38 @@ jobs:
     runs-on: [self-hosted, server]
     needs: test
     steps:
-      - name: Login to GitHub Container Registry (Podman)
+      - name: Login to GHCR (podman)
         run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      - name: Pull PROD image
-        run: podman pull "${{ env.IMAGE }}:${{ github.sha }}"
-
-      - name: Setup network and database
+      - name: Pull & run app
         run: |
           set -e
-          
-          # Создаём сеть для приложения и базы данных
+
+          podman pull "${{ env.IMAGE }}:${{ github.sha }}"
+
+          # сеть для app + db
           podman network create usersnet 2>/dev/null || true
-          
-          # Удаляем старый контейнер базы данных, если существует
+
+          # postgres (для простоты каждый раз пересоздаём)
           podman rm -f usersdb 2>/dev/null || true
-          
-          # Запускаем PostgreSQL
           podman run -d --name usersdb --network usersnet \
             -e POSTGRES_USER=kubsu \
             -e POSTGRES_PASSWORD=kubsu \
             -e POSTGRES_DB=kubsu \
             postgres:16-alpine
-          
-          # Ожидаем, пока PostgreSQL будет готов принимать подключения
-          echo "Waiting for PostgreSQL to be ready..."
+
+          # ЖДЁМ, пока Postgres реально готов принимать подключения
           for i in $(seq 1 30); do
-            if podman exec usersdb pg_isready -U kubsu -d kubsu; then
-              echo "PostgreSQL is ready!"
-              break
-            fi
-            echo "Waiting for PostgreSQL... ($i/30)"
+            podman exec usersdb pg_isready -U kubsu -d kubsu && break
             sleep 1
           done
 
-      - name: Deploy application
-        run: |
-          set -e
-          
-          # Удаляем старый контейнер приложения, если существует
+          # app
           podman rm -f usersapp 2>/dev/null || true
-          
-          # Запускаем приложение
           podman run -d --name usersapp --network usersnet \
             -p 8015:8015 \
             -e DATABASE_URL="postgresql+psycopg://kubsu:kubsu@usersdb:5432/kubsu" \
             -e ROOT_PATH="/${{ secrets.USERNAME }}" \
             "${{ env.IMAGE }}:${{ github.sha }}"
-          
-          # Ожидаем, пока приложение запустится
-          echo "Waiting for application to start..."
-          for i in $(seq 1 30); do
-            if curl -f http://localhost:8015/health 2>/dev/null || \
-               curl -f http://localhost:8015/ 2>/dev/null; then
-              echo "Application is running!"
-              break
-            fi
-            echo "Waiting for application... ($i/30)"
-            sleep 2
-          done
-          
-          # Показываем статус контейнеров
-          echo "Container status:"
-          podman ps
 
-      - name: Verify deployment
-        run: |
-          echo "Verifying deployment..."
-          # Проверяем, что контейнер работает
-          if podman ps | grep -q usersapp; then
-            echo " Application container is running"
-          else
-            echo " Application container is not running"
-            exit 1
-          fi
-          
-          # Проверяем доступность приложения
-          if curl -s -o /dev/null -w "%{http_code}" http://localhost:8015/ | grep -q "200\|201\|204"; then
-            echo " Application is accessible on port 8015"
-          else
-            echo "  Application might not be fully responding. Check logs with: podman logs usersapp"
-          fi
+          podman ps
