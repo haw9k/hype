@@ -173,3 +173,198 @@ Lab2
 22. Разделите данные на две группы: измерения, сделанные при температуре выше 
 среднего значения, и измерения, сделанные при температуре ниже среднего значения. 
 Сравните средний уровень концентрации бензола (C6H6(GT)) в этих двух группах
+import pandas as pd
+import numpy as np
+
+# 1. Загрузите данные из файла "AirQualityUCI.csv" в DataFrame pandas
+df = pd.read_csv('AirQualityUCI.csv', delimiter=';', decimal=',')
+
+# 2. Выведите первые и последние 5 строк DataFrame
+print("="*60)
+print("2. Первые 5 строк:")
+print(df.head())
+print("\nПоследние 5 строк:")
+print(df.tail())
+
+# 3. Выведите общее количество строк (измерений) и столбцов (признаков) в DataFrame
+print("\n" + "="*60)
+print("3. Размерность данных:")
+print(f"Количество строк: {df.shape[0]}")
+print(f"Количество столбцов: {df.shape[1]}")
+
+# 4. Выведите список названий всех столбцов в DataFrame
+print("\n" + "="*60)
+print("4. Названия столбцов:")
+print(df.columns.tolist())
+
+# 5. Проверьте, есть ли в DataFrame пропущенные значения
+print("\n" + "="*60)
+print("5. Пропущенные значения:")
+missing_values = df.isnull().sum()
+print(missing_values[missing_values > 0])
+
+# 6. Основные статистические характеристики для числовых столбцов
+print("\n" + "="*60)
+print("6. Статистические характеристики:")
+print(df.describe())
+
+# 7. Сводная информация о DataFrame
+print("\n" + "="*60)
+print("7. Информация о DataFrame:")
+print(df.info())
+
+# 8. Уникальные значения признака "T" (температура)
+print("\n" + "="*60)
+print("8. Уникальные значения температуры:")
+print(f"Количество уникальных значений: {df['T'].nunique()}")
+print(f"Уникальные значения:\n{df['T'].unique()[:10]}")  # первые 10
+print(f"\nЧастота встречаемости:\n{df['T'].value_counts().head(10)}")
+
+# 9. Строки, где CO(GT) > 3 мг/м³ и T < 20°C
+print("\n" + "="*60)
+print("9. Строки с CO(GT) > 3 и T < 20:")
+# Убираем возможные -200 в данных
+df_clean = df.copy()
+for col in df.columns:
+    if df[col].dtype in ['int64', 'float64']:
+        df_clean[col] = df[col].replace(-200, np.nan)
+
+filtered_rows = df_clean[(df_clean['CO(GT)'] > 3) & (df_clean['T'] < 20)]
+print(f"Количество таких строк: {len(filtered_rows)}")
+if len(filtered_rows) > 0:
+    print(filtered_rows[['Date', 'Time', 'CO(GT)', 'T']].head())
+
+# 10. Создайте новый признак "NOx_CO_ratio"
+print("\n" + "="*60)
+print("10. Создание нового признака NOx_CO_ratio:")
+df_clean['NOx_CO_ratio'] = df_clean['NOx(GT)'] / df_clean['CO(GT)']
+print("Новый столбец добавлен")
+
+# 11. Новый размер DataFrame после добавления нового столбца
+print("\n" + "="*60)
+print("11. Новый размер DataFrame:")
+print(f"Строк: {df_clean.shape[0]}, Столбцов: {df_clean.shape[1]}")
+
+# 12. Какое значение температуры (T) встречается в датасете чаще всего?
+print("\n" + "="*60)
+print("12. Наиболее частая температура:")
+most_common_temp = df_clean['T'].mode()[0]
+temp_count = df_clean['T'].value_counts().iloc[0]
+print(f"Температура {most_common_temp}°C встречается {temp_count} раз")
+
+# 13. Строки с отсутствующими данными о концентрации бензола
+print("\n" + "="*60)
+print("13. Строки с отсутствующими данными о бензоле:")
+# Ищем строки где C6H6(GT) равно -200 или NaN
+missing_benzene = df[(df['C6H6(GT)'] == -200) | df['C6H6(GT)'].isnull()]
+print(f"Количество строк: {len(missing_benzene)}")
+if len(missing_benzene) > 0:
+    print(missing_benzene[['Date', 'Time', 'C6H6(GT)']].head())
+
+# 14. Минимальный CO(GT) при температуре выше 25°C
+print("\n" + "="*60)
+print("14. Минимальный CO(GT) при T > 25°C:")
+high_temp_df = df_clean[df_clean['T'] > 25]
+if len(high_temp_df) > 0:
+    min_co = high_temp_df['CO(GT)'].min()
+    min_co_rows = high_temp_df[high_temp_df['CO(GT)'] == min_co]
+    print(f"Минимальное значение CO(GT): {min_co}")
+    print(f"Количество измерений с таким значением: {len(min_co_rows)}")
+    print(min_co_rows[['Date', 'Time', 'CO(GT)', 'T']].head())
+else:
+    print("Нет измерений с температурой выше 25°C")
+
+# 15. Измерения с относительной влажностью > 90%
+print("\n" + "="*60)
+print("15. Измерения с RH > 90%:")
+high_humidity = df_clean[df_clean['RH'] > 90]
+print(f"Количество измерений: {len(high_humidity)}")
+if len(high_humidity) > 0:
+    print(high_humidity[['Date', 'Time', 'RH', 'T']].head())
+
+# 16. Разница между средним CO(GT) при температуре выше и ниже 20°C
+print("\n" + "="*60)
+print("16. Разница средних CO(GT) при разной температуре:")
+co_above_20 = df_clean[df_clean['T'] > 20]['CO(GT)'].mean()
+co_below_20 = df_clean[df_clean['T'] <= 20]['CO(GT)'].mean()
+difference = abs(co_above_20 - co_below_20)
+print(f"Среднее CO(GT) при T > 20°C: {co_above_20:.2f}")
+print(f"Среднее CO(GT) при T <= 20°C: {co_below_20:.2f}")
+print(f"Разница: {difference:.2f}")
+
+# 17. Создайте признак "High_Ozone"
+print("\n" + "="*60)
+print("17. Создание признака High_Ozone:")
+ozone_mean = df_clean['PT08.S5(O3)'].mean()
+df_clean['High_Ozone'] = (df_clean['PT08.S5(O3)'] > ozone_mean).astype(int)
+print(f"Среднее значение озона: {ozone_mean:.2f}")
+print(f"Высокий озон (1): {df_clean['High_Ozone'].sum()} измерений")
+print(f"Низкий озон (0): {len(df_clean) - df_clean['High_Ozone'].sum()} измерений")
+
+# 18. Наиболее распространенный уровень концентрации оксидов азота
+print("\n" + "="*60)
+print("18. Наиболее распространенный уровень NOx(GT):")
+most_common_nox = df_clean['NOx(GT)'].mode()[0]
+print(f"Наиболее распространенное значение: {most_common_nox}")
+
+# 19. Измерения где C6H6(GT) и NOx(GT) превышают свои средние значения
+print("\n" + "="*60)
+print("19. Измерения с C6H6(GT) и NOx(GT) выше среднего:")
+benzene_mean = df_clean['C6H6(GT)'].mean()
+nox_mean = df_clean['NOx(GT)'].mean()
+high_both = df_clean[(df_clean['C6H6(GT)'] > benzene_mean) & 
+                     (df_clean['NOx(GT)'] > nox_mean)]
+print(f"Количество измерений: {len(high_both)}")
+print(f"Среднее C6H6(GT): {benzene_mean:.2f}")
+print(f"Среднее NOx(GT): {nox_mean:.2f}")
+
+# 20. Максимальная температура при NO2(GT) < 50
+print("\n" + "="*60)
+print("20. Максимальная температура при NO2(GT) < 50:")
+low_no2_df = df_clean[df_clean['NO2(GT)'] < 50]
+if len(low_no2_df) > 0:
+    max_temp = low_no2_df['T'].max()
+    max_temp_rows = low_no2_df[low_no2_df['T'] == max_temp]
+    print(f"Максимальная температура: {max_temp}°C")
+    print(f"Количество таких измерений: {len(max_temp_rows)}")
+    print(max_temp_rows[['Date', 'Time', 'T', 'NO2(GT)']].head())
+else:
+    print("Нет измерений с NO2(GT) < 50")
+
+# 21. Измерения где CO(GT) выше среднего
+print("\n" + "="*60)
+print("21. Измерения с CO(GT) выше среднего:")
+co_mean = df_clean['CO(GT)'].mean()
+high_co = df_clean[df_clean['CO(GT)'] > co_mean]
+print(f"Среднее CO(GT): {co_mean:.2f}")
+print(f"Количество измерений выше среднего: {len(high_co)}")
+print(f"Процент от общего числа: {len(high_co)/len(df_clean)*100:.1f}%")
+if len(high_co) > 0:
+    print(high_co[['Date', 'Time', 'CO(GT)', 'T']].head())
+
+# 22. Сравнение среднего C6H6(GT) при температуре выше и ниже среднего
+print("\n" + "="*60)
+print("22. Сравнение C6H6(GT) при разной температуре:")
+temp_mean = df_clean['T'].mean()
+above_temp_mean = df_clean[df_clean['T'] > temp_mean]
+below_temp_mean = df_clean[df_clean['T'] <= temp_mean]
+
+benzene_above = above_temp_mean['C6H6(GT)'].mean()
+benzene_below = below_temp_mean['C6H6(GT)'].mean()
+
+print(f"Средняя температура: {temp_mean:.2f}°C")
+print(f"Среднее C6H6(GT) при T > {temp_mean:.2f}°C: {benzene_above:.2f}")
+print(f"Среднее C6H6(GT) при T <= {temp_mean:.2f}°C: {benzene_below:.2f}")
+print(f"Разница: {abs(benzene_above - benzene_below):.2f}")
+
+# Дополнительно: сводка по результатам
+print("\n" + "="*60)
+print("Итоговая сводка:")
+print("="*60)
+print(f"1. Всего измерений: {df.shape[0]}")
+print(f"2. Всего признаков: {df.shape[1]}")
+print(f"3. Пропущенных значений: {df.isnull().sum().sum()}")
+print(f"4. Диапазон температур: {df_clean['T'].min():.1f}°C - {df_clean['T'].max():.1f}°C")
+print(f"5. Диапазон CO(GT): {df_clean['CO(GT)'].min():.2f} - {df_clean['CO(GT)'].max():.2f} мг/м³")
+print(f"6. Средняя температура: {df_clean['T'].mean():.2f}°C")
+print(f"7. Средний CO(GT): {df_clean['CO(GT)'].mean():.2f} мг/м³")
