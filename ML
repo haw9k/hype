@@ -17,3 +17,159 @@
 11. Создать 5x5 матрицу со значениями в строках от 1 до 5.
 12. Создать две матрицы 4x4 и 4x4. Найти их произведение. Найти 
 диагональные элементы произведения матриц
+import numpy as np
+
+print("=" * 60)
+print("РЕШЕНИЕ ЗАДАЧ ТОЛЬКО С ИСПОЛЬЗОВАНИЕМ NUMPY")
+print("=" * 60)
+
+# 1. Создать вектор размера 10, заполненный единицами
+print("\n1. Вектор из 10 единиц:")
+vector1 = np.ones(10)
+print(vector1)
+
+# 2. Создать вектор со значениями от 10 до 49
+print("\n2. Вектор от 10 до 49:")
+vector2 = np.arange(10, 50)
+print(vector2)
+
+# 3. Создать вектор размера 10 со случайными значениями, найти индексы ненулевых элементов
+print("\n3. Вектор со случайными значениями и индексы ненулевых элементов:")
+np.random.seed(42)  # Для воспроизводимости
+vector3 = np.random.randn(10)
+vector3[vector3 < -0.5] = 0  # Делаем некоторые элементы нулевыми
+print("Вектор:", vector3)
+nonzero_indices = np.nonzero(vector3)[0]
+print("Индексы ненулевых элементов:", nonzero_indices)
+
+# 4. Создать матрицу 3x3 со значениями от 0 до 8
+print("\n4. Матрица 3x3 со значениями от 0 до 8:")
+matrix4 = np.arange(9).reshape(3, 3)
+print(matrix4)
+
+# 5. Создать 8x8 матрицу в шахматном порядке с помощью tile
+print("\n5. Шахматная матрица 8x8:")
+chess_base = np.array([[0, 1], [1, 0]])
+matrix5 = np.tile(chess_base, (4, 4))
+print(matrix5)
+
+# 6. Заменить минимальный элемент на ноль
+print("\n6. Замена минимального элемента на ноль:")
+vector6 = np.random.randn(10)
+print("Исходный вектор:", vector6)
+min_index = np.argmin(vector6)
+vector6[min_index] = 0
+print("Вектор после замены:", vector6)
+print("Минимальный элемент был на позиции", min_index)
+
+# 7. Найти наиболее частое значение в массиве из 100 элементов
+print("\n7. Наиболее частое значение в массиве из 100 элементов:")
+vector7 = np.random.randint(0, 10, 100)
+print("Первые 20 элементов:", vector7[:20])
+unique_values, counts = np.unique(vector7, return_counts=True)
+most_frequent = unique_values[np.argmax(counts)]
+print("Наиболее частое значение:", most_frequent)
+print("Все уникальные значения и их частоты:")
+for val, count in zip(unique_values, counts):
+    print(f"  {val}: {count} раз")
+
+# 8. Отнять среднее из каждой строки в матрице
+print("\n8. Отнимаем среднее из каждой строки матрицы:")
+matrix8 = np.random.randint(1, 100, size=(4, 5))
+print("Исходная матрица:")
+print(matrix8)
+row_means = matrix8.mean(axis=1, keepdims=True)
+matrix8_centered = matrix8 - row_means
+print("\nМатрица после вычитания среднего по строкам:")
+print(matrix8_centered)
+
+# Проверка: среднее каждой строки должно быть близко к 0
+print("\nСреднее по строкам после центрирования:")
+print(matrix8_centered.mean(axis=1))
+
+# 9. Поменять две строки в матрице
+print("\n9. Меняем местами две строки в матрице:")
+matrix9 = np.arange(20).reshape(5, 4)
+print("Исходная матрица:")
+print(matrix9)
+# Меняем строки 1 и 3
+matrix9[[1, 3]] = matrix9[[3, 1]]
+print("\nМатрица после замены строк 1 и 3:")
+print(matrix9)
+
+# 10. Найти n наибольших значений в векторе
+print("\n10. Находим n наибольших значений:")
+np.random.seed(123)
+vector10 = np.random.randn(15)
+n = 3
+print("Вектор:", vector10)
+largest_indices = np.argsort(vector10)[-n:][::-1]
+largest_values = vector10[largest_indices]
+print(f"{n} наибольших значения:", largest_values)
+print(f"Их индексы:", largest_indices)
+
+# Альтернативное решение с использованием argpartition
+largest_indices_alt = np.argpartition(-vector10, n)[:n]
+largest_values_alt = vector10[largest_indices_alt]
+print(f"\nАльтернативное решение (argpartition):")
+print(f"{n} наибольших значения:", largest_values_alt)
+print(f"Их индексы:", largest_indices_alt)
+
+# 11. Создать 5x5 матрицу со значениями в строках от 1 до 5
+print("\n11. Матрица 5x5 со значениями в строках от 1 до 5:")
+matrix11 = np.tile(np.arange(1, 6), (5, 1))
+print(matrix11)
+
+# Альтернативное решение с broadcasting
+matrix11_alt = np.ones((5, 5)) * np.arange(1, 6)
+print("\nАльтернативное решение (broadcasting):")
+print(matrix11_alt)
+
+# 12. Умножение матриц и нахождение диагональных элементов
+print("\n12. Умножение матриц 4x4 и диагональные элементы:")
+np.random.seed(42)
+matrix12_a = np.random.randint(1, 10, size=(4, 4))
+matrix12_b = np.random.randint(1, 10, size=(4, 4))
+
+print("Матрица A:")
+print(matrix12_a)
+print("\nМатрица B:")
+print(matrix12_b)
+
+# Умножение матриц
+product = np.dot(matrix12_a, matrix12_b)
+print("\nПроизведение A × B:")
+print(product)
+
+# Диагональные элементы произведения
+diagonal = np.diag(product)
+print("\nДиагональные элементы произведения:", diagonal)
+
+# Проверка с помощью поэлементного умножения и суммирования
+diagonal_check = np.sum(matrix12_a * matrix12_b.T, axis=1)
+print("\nПроверка диагональных элементов:", diagonal_check)
+
+print("\n" + "=" * 60)
+print("РЕЗЮМЕ:")
+print("=" * 60)
+
+# Создаем массив для демонстрации всех результатов
+results = [
+    ("1. Вектор из единиц", vector1.shape, vector1.dtype, np.sum(vector1)),
+    ("2. Вектор 10-49", vector2.shape, vector2.dtype, f"{vector2[0]}-{vector2[-1]}"),
+    ("3. Ненулевые индексы", vector3.shape, len(nonzero_indices), nonzero_indices),
+    ("4. Матрица 0-8", matrix4.shape, matrix4.dtype, f"min={matrix4.min()}, max={matrix4.max()}"),
+    ("5. Шахматная матрица", matrix5.shape, matrix5.dtype, f"zeros={np.sum(matrix5==0)}, ones={np.sum(matrix5==1)}"),
+    ("6. Min заменен на 0", vector6.shape, vector6.dtype, f"min позиция={min_index}"),
+    ("7. Частое значение", vector7.shape, vector7.dtype, f"значение={most_frequent}"),
+    ("8. Центрированная", matrix8_centered.shape, matrix8_centered.dtype, f"среднее строк ~{matrix8_centered.mean(axis=1).round(2)}"),
+    ("9. Замена строк", matrix9.shape, matrix9.dtype, "строки 1↔3 заменены"),
+    ("10. Топ-3 значения", vector10.shape, vector10.dtype, f"значения={largest_values.round(3)}"),
+    ("11. Матрица 1-5", matrix11.shape, matrix11.dtype, "повтор строк"),
+    ("12. Диагональ произведения", product.shape, product.dtype, f"диагональ={diagonal}")
+]
+
+print("\n№ | Описание | Форма | Тип | Дополнительно")
+print("-" * 80)
+for i, (desc, shape, dtype, extra) in enumerate(results, 1):
+    print(f"{i:2} | {desc:20} | {str(shape):8} | {str(dtype):10} | {extra}")
