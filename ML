@@ -213,4 +213,27 @@ most_frequent_value = unique_values[most_frequent_index]
 most_frequent_count = counts[most_frequent_index]
 
 print(f"\nНаиболее частое значение: {most_frequent_value}")
-print(f"Оно встречается {most_frequent_count} раз(а)")
+print(f"Оно встречается {most_frequent_count} раз(а)")import numpy as np
+
+# 8. Создать матрицу. Отнять среднее из каждой строки в матрице
+
+# Создаем матрицу 3x4
+matrix = np.array([[1, 2, 3, 4],
+                   [5, 6, 7, 8],
+                   [9, 10, 11, 12]])
+
+print("Исходная матрица:")
+print(matrix)
+
+# Находим среднее значение ВСЕГО массива
+mean_value = np.mean(matrix)
+print(f"\nСреднее значение всего массива: {mean_value}")
+
+# Отнимаем среднее от каждого элемента
+result = matrix - mean_value
+
+print("\nМатрица после вычитания среднего:")
+print(result)
+
+# Проверяем, что новое среднее ≈ 0
+print(f"\nНовое среднее значение: {np.mean(result):.10f}")
