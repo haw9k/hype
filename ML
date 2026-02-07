@@ -191,3 +191,26 @@ print("Индексы ненулевых элементов:", nonzero_indices)
 
 # Покажем какие это значения
 print("Ненулевые значения:", vec[nonzero_indices])
+import numpy as np
+
+# 7. Создать вектор размера 100. Заполнить его случайными значениями. 
+# Найти наиболее частое значение в массиве
+
+# Создаем вектор размера 100 со случайными значениями
+np.random.seed(42)  # для воспроизводимости
+vec = np.random.randint(0, 10, 100)  # целые числа от 0 до 9
+
+print("Первые 10 элементов вектора:", vec[:10])
+
+# Находим уникальные значения и их частоты
+unique_values, counts = np.unique(vec, return_counts=True)
+
+# Находим индекс максимальной частоты
+most_frequent_index = np.argmax(counts)
+
+# Получаем самое частое значение
+most_frequent_value = unique_values[most_frequent_index]
+most_frequent_count = counts[most_frequent_index]
+
+print(f"\nНаиболее частое значение: {most_frequent_value}")
+print(f"Оно встречается {most_frequent_count} раз(а)")
