@@ -175,9 +175,9 @@ Lab2
 Сравните средний уровень концентрации бензола (C6H6(GT)) в этих двух группах
 import pandas as pd
 import numpy as np
-
+в файлах Colab  будет папка контент,AirQualityUCI.csv нужно перенести туда.
 # 1. Загрузите данные из файла "AirQualityUCI.csv" в DataFrame pandas
-df = pd.read_csv('AirQualityUCI.csv', delimiter=';', decimal=',')
+df = pd.read_csv('AirQualityUCI.csv', sep=';', decimal=',')
 
 # 2. Выведите первые и последние 5 строк DataFrame
 print("="*60)
