@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/144.0.0.0" version="29.3.8">
   <diagram name="Страница — 1" id="dv0NK55W7ZsjXpyWqJk3">
-    <mxGraphModel dx="695" dy="3293" grid="0" gridSize="12" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+    <mxGraphModel dx="632" dy="3219" grid="0" gridSize="12" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1786,7 +1786,7 @@
           <mxGeometry height="60" width="30" x="2576" y="1146" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Администратор" vertex="1">
-          <mxGeometry height="60" width="30" x="3556" y="1130" as="geometry" />
+          <mxGeometry height="60" width="30" x="3558" y="1209" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-5" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Авторизоваться" vertex="1">
           <mxGeometry height="50" width="108" x="2707" y="980" as="geometry" />
@@ -1919,112 +1919,152 @@
           <mxGeometry height="60" width="121.5" x="2939.5" y="1052" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-39" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Управлять инструментами" vertex="1">
-          <mxGeometry height="80" width="120" x="3679" y="1071" as="geometry" />
+          <mxGeometry height="80" width="120" x="3681" y="1150" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-40" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Управлять документами инструмента" vertex="1">
-          <mxGeometry height="80" width="120" x="3655" y="1224" as="geometry" />
+          <mxGeometry height="80" width="120" x="3657" y="1303" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-41" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Просматривать логи доступа" vertex="1">
-          <mxGeometry height="80" width="120" x="3628" y="1325" as="geometry" />
+          <mxGeometry height="80" width="120" x="3630" y="1404" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-42" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Управлять тестами" vertex="1">
-          <mxGeometry height="80" width="120" x="3586" y="866" as="geometry" />
+          <mxGeometry height="80" width="120" x="3588" y="945" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-43" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" target="hkoBntevgoP75Cton46Y-42" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3583" y="1142" as="sourcePoint" />
-            <mxPoint x="3633" y="1092" as="targetPoint" />
+            <mxPoint x="3585" y="1221" as="sourcePoint" />
+            <mxPoint x="3635" y="1171" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-44" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="hkoBntevgoP75Cton46Y-39" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3589" y="1159" as="sourcePoint" />
-            <mxPoint x="3751" y="1141" as="targetPoint" />
+            <mxPoint x="3591" y="1238" as="sourcePoint" />
+            <mxPoint x="3753" y="1220" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-45" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.413;entryDx=0;entryDy=0;entryPerimeter=0;" target="hkoBntevgoP75Cton46Y-40" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3594" y="1172" as="sourcePoint" />
-            <mxPoint x="3644" y="1261" as="targetPoint" />
+            <mxPoint x="3596" y="1251" as="sourcePoint" />
+            <mxPoint x="3646" y="1340" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-46" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.338;entryDx=0;entryDy=0;entryPerimeter=0;" target="hkoBntevgoP75Cton46Y-41" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3580" y="1224" as="sourcePoint" />
-            <mxPoint x="3647" y="1319" as="targetPoint" />
+            <mxPoint x="3582" y="1303" as="sourcePoint" />
+            <mxPoint x="3649" y="1398" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-47" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Создать тест" vertex="1">
-          <mxGeometry height="80" width="120" x="3754" y="767" as="geometry" />
+          <mxGeometry height="80" width="120" x="3756" y="846" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-48" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Редактировать тест" vertex="1">
-          <mxGeometry height="80" width="120" x="3760" y="850" as="geometry" />
+          <mxGeometry height="80" width="120" x="3762" y="929" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-49" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Просмотреть результаты тестов" vertex="1">
-          <mxGeometry height="80" width="120" x="3766" y="934" as="geometry" />
+          <mxGeometry height="80" width="120" x="3768" y="1013" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-50" edge="1" parent="1" source="hkoBntevgoP75Cton46Y-42" style="endArrow=classic;html=1;rounded=0;exitX=0.65;exitY=0.013;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.017;entryY=0.625;entryDx=0;entryDy=0;entryPerimeter=0;" target="hkoBntevgoP75Cton46Y-47" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3758" y="918" as="sourcePoint" />
-            <mxPoint x="3808" y="868" as="targetPoint" />
+            <mxPoint x="3760" y="997" as="sourcePoint" />
+            <mxPoint x="3810" y="947" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hkoBntevgoP75Cton46Y-73" connectable="0" parent="hkoBntevgoP75Cton46Y-50" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="include" vertex="1">
+          <mxGeometry relative="1" x="0.0858" as="geometry">
+            <mxPoint y="1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-51" edge="1" parent="1" source="hkoBntevgoP75Cton46Y-42" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.017;entryY=0.65;entryDx=0;entryDy=0;entryPerimeter=0;" target="hkoBntevgoP75Cton46Y-48" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3747" y="1090" as="sourcePoint" />
-            <mxPoint x="3797" y="1040" as="targetPoint" />
+            <mxPoint x="3749" y="1169" as="sourcePoint" />
+            <mxPoint x="3799" y="1119" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hkoBntevgoP75Cton46Y-74" connectable="0" parent="hkoBntevgoP75Cton46Y-51" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="include" vertex="1">
+          <mxGeometry relative="1" x="-0.1319" y="-1" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-52" edge="1" parent="1" source="hkoBntevgoP75Cton46Y-42" style="endArrow=classic;html=1;rounded=0;exitX=0.675;exitY=0.963;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.025;entryY=0.363;entryDx=0;entryDy=0;entryPerimeter=0;" target="hkoBntevgoP75Cton46Y-49" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3747" y="1096" as="sourcePoint" />
-            <mxPoint x="3797" y="1046" as="targetPoint" />
+            <mxPoint x="3749" y="1175" as="sourcePoint" />
+            <mxPoint x="3799" y="1125" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hkoBntevgoP75Cton46Y-75" connectable="0" parent="hkoBntevgoP75Cton46Y-52" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="include" vertex="1">
+          <mxGeometry relative="1" x="0.0346" y="1" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-58" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Загрузить документ" vertex="1">
-          <mxGeometry height="80" width="120" x="3902" y="1270" as="geometry" />
+          <mxGeometry height="80" width="120" x="3904" y="1349" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-59" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Удалить документ" vertex="1">
-          <mxGeometry height="80" width="120" x="3802" y="1341" as="geometry" />
+          <mxGeometry height="80" width="120" x="3804" y="1420" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-60" edge="1" parent="1" source="hkoBntevgoP75Cton46Y-40" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.325;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="hkoBntevgoP75Cton46Y-58" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3787" y="1242" as="sourcePoint" />
-            <mxPoint x="3837" y="1192" as="targetPoint" />
+            <mxPoint x="3789" y="1321" as="sourcePoint" />
+            <mxPoint x="3839" y="1271" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hkoBntevgoP75Cton46Y-71" connectable="0" parent="hkoBntevgoP75Cton46Y-60" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="include" vertex="1">
+          <mxGeometry relative="1" x="-0.3259" as="geometry">
+            <mxPoint y="-1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-61" edge="1" parent="1" source="hkoBntevgoP75Cton46Y-40" style="endArrow=classic;html=1;rounded=0;exitX=0.967;exitY=0.75;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="hkoBntevgoP75Cton46Y-59" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3833" y="1326" as="sourcePoint" />
-            <mxPoint x="3883" y="1276" as="targetPoint" />
+            <mxPoint x="3835" y="1405" as="sourcePoint" />
+            <mxPoint x="3885" y="1355" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hkoBntevgoP75Cton46Y-72" connectable="0" parent="hkoBntevgoP75Cton46Y-61" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="include" vertex="1">
+          <mxGeometry relative="1" x="-0.115" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-62" edge="1" parent="1" source="hkoBntevgoP75Cton46Y-39" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="hkoBntevgoP75Cton46Y-65" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3806" y="1159" as="sourcePoint" />
-            <mxPoint x="3888" y="1074" as="targetPoint" />
+            <mxPoint x="3808" y="1238" as="sourcePoint" />
+            <mxPoint x="3890" y="1153" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hkoBntevgoP75Cton46Y-68" connectable="0" parent="hkoBntevgoP75Cton46Y-62" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="include" vertex="1">
+          <mxGeometry relative="1" x="-0.1351" y="-2" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-63" edge="1" parent="1" source="hkoBntevgoP75Cton46Y-39" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="hkoBntevgoP75Cton46Y-66" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3882" y="1198" as="sourcePoint" />
-            <mxPoint x="3904" y="1137" as="targetPoint" />
+            <mxPoint x="3884" y="1277" as="sourcePoint" />
+            <mxPoint x="3906" y="1216" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hkoBntevgoP75Cton46Y-69" connectable="0" parent="hkoBntevgoP75Cton46Y-63" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="include" vertex="1">
+          <mxGeometry relative="1" x="-0.221" y="1" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-64" edge="1" parent="1" source="hkoBntevgoP75Cton46Y-39" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.025;entryY=0.375;entryDx=0;entryDy=0;entryPerimeter=0;" target="hkoBntevgoP75Cton46Y-67" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="3807" y="1218" as="sourcePoint" />
-            <mxPoint x="3892" y="1195" as="targetPoint" />
+            <mxPoint x="3809" y="1297" as="sourcePoint" />
+            <mxPoint x="3894" y="1274" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hkoBntevgoP75Cton46Y-70" connectable="0" parent="hkoBntevgoP75Cton46Y-64" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="include" vertex="1">
+          <mxGeometry relative="1" x="-0.1825" y="-1" as="geometry">
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-65" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Добавить инструмент" vertex="1">
-          <mxGeometry height="80" width="120" x="3915" y="991" as="geometry" />
+          <mxGeometry height="80" width="120" x="3917" y="1070" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-66" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Редактировать инструмент" vertex="1">
-          <mxGeometry height="80" width="120" x="3972" y="1087" as="geometry" />
+          <mxGeometry height="80" width="120" x="3974" y="1166" as="geometry" />
         </mxCell>
         <mxCell id="hkoBntevgoP75Cton46Y-67" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Настроить правила допуска" vertex="1">
-          <mxGeometry height="80" width="120" x="3925" y="1184" as="geometry" />
+          <mxGeometry height="80" width="120" x="3927" y="1263" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
