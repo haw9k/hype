@@ -417,3 +417,273 @@ print(f"7. Средний CO(GT): {df_clean['CO(GT)'].mean():.2f} мг/м³")
 9*. Постройте график с областями (area plot), показывающий изменение во времени нескольких 
 показателей, например, концентрации разных веществ. Это позволит наглядно увидеть вклад 
 каждого вещества в общий уровень загрязнения.
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+
+# Настройка стиля для графиков
+plt.style.use('ggplot')
+matplotlib.rcParams['figure.figsize'] = (12, 8)
+matplotlib.rcParams['font.size'] = 12
+
+# Загрузка и предобработка данных
+print("Загрузка данных AirQualityUCI...")
+try:
+    df = pd.read_csv('AirQualityUCI.csv', sep=';', decimal=',')
+    print("Данные успешно загружены")
+except FileNotFoundError:
+    print("Файл 'AirQualityUCI.csv' не найден. Создаем пример данных...")
+    # Создаем пример данных для демонстрации
+    np.random.seed(42)
+    dates = pd.date_range('2024-01-01', periods=1000, freq='H')
+    df = pd.DataFrame({
+        'Date': dates.date,
+        'Time': dates.time,
+        'CO(GT)': np.random.gamma(2, 2, 1000),
+        'C6H6(GT)': np.random.gamma(3, 1.5, 1000),
+        'NOx(GT)': np.random.gamma(2.5, 3, 1000),
+        'T': np.random.normal(20, 8, 1000),
+        'RH': np.random.normal(60, 15, 1000),
+        'AH': np.random.gamma(5, 2, 1000),
+        'PT08.S5(O3)': np.random.gamma(4, 5, 1000),
+        'NO2(GT)': np.random.gamma(3, 10, 1000)
+    })
+
+# Преобразование типов данных
+for col in ['CO(GT)', 'C6H6(GT)', 'NOx(GT)', 'T', 'RH', 'AH', 'PT08.S5(O3)', 'NO2(GT)']:
+    if col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+# Удаление пропущенных значений (где -200)
+df = df.replace(-200, np.nan)
+df = df.dropna()
+
+print(f"Размер данных после очистки: {df.shape}")
+
+# 1. Распределение CO(GT) по интервалам
+print("\n1. Построение столбчатой диаграммы распределения CO(GT)")
+# Создание интервалов
+df['CO_range'] = pd.cut(df['CO(GT)'], bins=10)
+co_distribution = df['CO_range'].value_counts().sort_index()
+
+plt.figure(figsize=(14, 6))
+co_distribution.plot(kind='bar', color='skyblue', edgecolor='black')
+plt.title('Распределение концентрации CO(GT)', fontsize=16, fontweight='bold')
+plt.xlabel('Диапазон CO(GT) (мг/м³)', fontsize=14)
+plt.ylabel('Количество наблюдений', fontsize=14)
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('co_distribution.png', dpi=150)
+plt.show()
+
+# 2. То же распределение в логарифмическом масштабе
+print("\n2. То же распределение с логарифмическим масштабом")
+plt.figure(figsize=(14, 6))
+co_distribution.plot(kind='bar', color='lightcoral', edgecolor='black', logy=True)
+plt.title('Распределение CO(GT) (логарифмическая шкала)', fontsize=16, fontweight='bold')
+plt.xlabel('Диапазон CO(GT) (мг/м³)', fontsize=14)
+plt.ylabel('Количество наблюдений (log)', fontsize=14)
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig('co_distribution_log.png', dpi=150)
+plt.show()
+
+# 3-5. Гистограммы температуры для CO выше и ниже среднего
+print("\n3-5. Гистограммы температуры для разных групп CO")
+co_mean = df['CO(GT)'].mean()
+co_above = df[df['CO(GT)'] > co_mean]['T']
+co_below = df[df['CO(GT)'] <= co_mean]['T']
+
+plt.figure(figsize=(14, 8))
+plt.hist([co_above, co_below], bins=20, density=True, alpha=0.5, 
+         color=['red', 'blue'], label=['CO выше среднего', 'CO ниже среднего'])
+plt.title('Распределение температуры для разных уровней CO', fontsize=16, fontweight='bold')
+plt.xlabel('Температура (°C)', fontsize=14)
+plt.ylabel('Плотность распределения', fontsize=14)
+plt.legend(fontsize=12)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig('temperature_histograms.png', dpi=150)
+plt.show()
+
+# 6. Распределение бензола по времени суток
+print("\n6. Распределение бензола по времени суток")
+# Создание категорий времени суток
+def get_time_period(hour):
+    if 6 <= hour < 12:
+        return 'Утро'
+    elif 12 <= hour < 18:
+        return 'День'
+    elif 18 <= hour < 24:
+        return 'Вечер'
+    else:
+        return 'Ночь'
+
+# Извлечение часа из времени
+df['Hour'] = pd.to_datetime(df['Time'].astype(str)).dt.hour
+df['Time_period'] = df['Hour'].apply(get_time_period)
+
+plt.figure(figsize=(14, 8))
+time_period_order = ['Утро', 'День', 'Вечер', 'Ночь']
+for period in time_period_order:
+    data = df[df['Time_period'] == period]['C6H6(GT)'].dropna()
+    plt.hist(data, bins=20, alpha=0.5, label=period, density=True)
+
+plt.title('Распределение бензола (C6H6(GT)) по времени суток', fontsize=16, fontweight='bold')
+plt.xlabel('Концентрация бензола (мкг/м³)', fontsize=14)
+plt.ylabel('Плотность распределения', fontsize=14)
+plt.legend(fontsize=12)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig('benzene_time_distribution.png', dpi=150)
+plt.show()
+
+# 7. Boxplots для CO(GT) по времени суток
+print("\n7. Boxplots для CO(GT) по времени суток")
+plt.figure(figsize=(14, 8))
+co_by_time = [df[df['Time_period'] == period]['CO(GT)'].dropna() 
+              for period in time_period_order]
+bp = plt.boxplot(co_by_time, labels=time_period_order, patch_artist=True)
+
+# Настройка цветов
+colors = ['gold', 'lightgreen', 'lightcoral', 'lightskyblue']
+for patch, color in zip(bp['boxes'], colors):
+    patch.set_facecolor(color)
+    patch.set_alpha(0.7)
+
+plt.title('Распределение CO(GT) по времени суток', fontsize=16, fontweight='bold')
+plt.xlabel('Время суток', fontsize=14)
+plt.ylabel('Концентрация CO(GT) (мг/м³)', fontsize=14)
+plt.grid(True, alpha=0.3, axis='y')
+plt.tight_layout()
+plt.savefig('co_boxplots.png', dpi=150)
+plt.show()
+
+# 8. Диаграммы рассеяния зависимости загрязнений от температуры
+print("\n8. Диаграммы рассеяния зависимости загрязнений от температуры")
+fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+pollutants = ['CO(GT)', 'C6H6(GT)', 'NOx(GT)', 'NO2(GT)']
+colors = ['red', 'blue', 'green', 'purple']
+
+for ax, pollutant, color in zip(axes.flat, pollutants, colors):
+    ax.scatter(df['T'], df[pollutant], alpha=0.3, c=color, s=20)
+    ax.set_xlabel('Температура (°C)', fontsize=12)
+    ax.set_ylabel(f'{pollutant} (мкг/м³)', fontsize=12)
+    ax.set_title(f'Зависимость {pollutant} от температуры', fontsize=14)
+    ax.grid(True, alpha=0.3)
+    
+    # Добавление линии тренда
+    z = np.polyfit(df['T'].dropna(), df[pollutant].dropna(), 1)
+    p = np.poly1d(z)
+    ax.plot(df['T'].sort_values(), p(df['T'].sort_values()), 
+            "r--", alpha=0.8, linewidth=2, label=f'Тренд: {z[0]:.2f}x + {z[1]:.2f}')
+    ax.legend(fontsize=10)
+
+plt.suptitle('Зависимость концентрации загрязняющих веществ от температуры', 
+             fontsize=16, fontweight='bold')
+plt.tight_layout()
+plt.savefig('pollution_temperature_scatter.png', dpi=150)
+plt.show()
+
+# 9*. График с областями (area plot) изменения показателей во времени
+print("\n9. График с областями изменения показателей во времени")
+
+# Создание временной метки
+df['DateTime'] = pd.to_datetime(df['Date'].astype(str) + ' ' + df['Time'].astype(str))
+df_sorted = df.sort_values('DateTime')
+
+# Выбор показателей для графика
+pollutants_area = ['CO(GT)', 'C6H6(GT)', 'NOx(GT)']
+# Нормализация данных для лучшей визуализации
+df_normalized = df_sorted.copy()
+for pollutant in pollutants_area:
+    df_normalized[pollutant] = (df_sorted[pollutant] - df_sorted[pollutant].min()) / \
+                                (df_sorted[pollutant].max() - df_sorted[pollutant].min())
+
+plt.figure(figsize=(16, 10))
+plt.stackplot(df_normalized['DateTime'], 
+              df_normalized['CO(GT)'].values,
+              df_normalized['C6H6(GT)'].values,
+              df_normalized['NOx(GT)'].values,
+              labels=['CO(GT)', 'C6H6(GT)', 'NOx(GT)'],
+              colors=['red', 'blue', 'green'],
+              alpha=0.7)
+
+plt.title('Изменение концентрации загрязняющих веществ во времени', 
+          fontsize=16, fontweight='bold')
+plt.xlabel('Дата и время', fontsize=14)
+plt.ylabel('Нормализованная концентрация', fontsize=14)
+plt.legend(loc='upper right', fontsize=12)
+plt.grid(True, alpha=0.3)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.savefig('pollution_area_plot.png', dpi=150)
+plt.show()
+
+# Дополнительные визуализации для более полного анализа
+
+print("\nДополнительные визуализации:")
+
+# 10. Тепловая карта корреляций
+print("10. Тепловая карта корреляций между показателями")
+plt.figure(figsize=(12, 10))
+correlation_matrix = df[pollutants_area + ['T', 'RH', 'AH']].corr()
+im = plt.imshow(correlation_matrix, cmap='coolwarm', aspect='auto', vmin=-1, vmax=1)
+plt.colorbar(im, label='Корреляция')
+plt.xticks(range(len(correlation_matrix.columns)), correlation_matrix.columns, rotation=45, ha='right')
+plt.yticks(range(len(correlation_matrix.columns)), correlation_matrix.columns)
+plt.title('Тепловая карта корреляций между показателями', fontsize=16, fontweight='bold')
+
+# Добавление значений корреляции на тепловую карту
+for i in range(len(correlation_matrix.columns)):
+    for j in range(len(correlation_matrix.columns)):
+        plt.text(j, i, f'{correlation_matrix.iloc[i, j]:.2f}', 
+                ha='center', va='center', fontsize=10)
+
+plt.tight_layout()
+plt.savefig('correlation_heatmap.png', dpi=150)
+plt.show()
+
+# 11. Временные ряды для ключевых показателей
+print("11. Временные ряды для ключевых показателей")
+fig, axes = plt.subplots(3, 1, figsize=(16, 12))
+
+# Выбор подмножества данных для лучшей визуализации
+sample_data = df_sorted.iloc[:200]  # Первые 200 наблюдений
+
+for i, (ax, pollutant, color) in enumerate(zip(axes, pollutants_area, ['red', 'blue', 'green'])):
+    ax.plot(sample_data['DateTime'], sample_data[pollutant], color=color, linewidth=1.5, alpha=0.7)
+    ax.set_ylabel(f'{pollutant} (мкг/м³)', fontsize=12)
+    ax.set_title(f'Временной ряд: {pollutant}', fontsize=14)
+    ax.grid(True, alpha=0.3)
+    ax.tick_params(axis='x', rotation=45)
+
+axes[-1].set_xlabel('Дата и время', fontsize=12)
+plt.suptitle('Временные ряды концентрации загрязняющих веществ', 
+             fontsize=16, fontweight='bold')
+plt.tight_layout()
+plt.savefig('time_series.png', dpi=150)
+plt.show()
+
+# Вывод статистики
+print("\nСтатистика по созданным графикам:")
+print(f"1. Распределение CO(GT): {len(co_distribution)} интервалов")
+print(f"2. Среднее значение CO(GT): {co_mean:.2f} мкг/м³")
+print(f"3. Количество наблюдений с CO выше среднего: {len(co_above)}")
+print(f"4. Количество наблюдений с CO ниже среднего: {len(co_below)}")
+print(f"5. Распределение по времени суток:")
+for period in time_period_order:
+    count = len(df[df['Time_period'] == period])
+    print(f"   {period}: {count} наблюдений")
+
+print("\nВсе графики сохранены в файлы:")
+print("- co_distribution.png")
+print("- co_distribution_log.png")
+print("- temperature_histograms.png")
+print("- benzene_time_distribution.png")
+print("- co_boxplots.png")
+print("- pollution_temperature_scatter.png")
+print("- pollution_area_plot.png")
+print("- correlation_heatmap.png")
+print("- time_series.png")
