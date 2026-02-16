@@ -1,149 +1,40 @@
-name: CI/CD
-
-on:
-  push:
-    branches: [ master ]
-
-permissions:
-  contents: read
-  packages: write
-
-env:
-  IMAGE: ghcr.io/${{ github.repository_owner }}/docker_linux
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-
-      - name: Build & push PROD image
-        run: |
-          set -e
-          docker build --target prod -t "${{ env.IMAGE }}:${{ github.sha }}" .
-          docker push "${{ env.IMAGE }}:${{ github.sha }}"
-
-      - name: Build & push TEST image
-        run: |
-          set -e
-          docker build --target test -t "${{ env.IMAGE }}:test-${{ github.sha }}" .
-          docker push "${{ env.IMAGE }}:test-${{ github.sha }}"
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-
-    services:
-      db:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: kubsu
-          POSTGRES_PASSWORD: kubsu
-          POSTGRES_DB: kubsu
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U kubsu -d kubsu"
-          --health-interval 2s
-          --health-timeout 2s
-          --health-retries 30
-
-    steps:
-      - name: Login to GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-
-      - name: Pull TEST image
-        run: docker pull "${{ env.IMAGE }}:test-${{ github.sha }}"
-
-      - name: Run tests inside built image
-        run: |
-          set -e
-          docker run --rm --network host \
-            -e DATABASE_URL="postgresql+psycopg://kubsu:kubsu@127.0.0.1:5432/kubsu" \
-            -e ROOT_PATH="" \
-            "${{ env.IMAGE }}:test-${{ github.sha }}"
-
-  deploy:
-    runs-on: [self-hosted, server]
-    needs: test
-    steps:
-      - name: Login to GHCR (podman)
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u "${{ github.actor }}" --password-stdin
-
-      - name: Pull & run app
-        run: |
-          set -e
-
-          podman pull "${{ env.IMAGE }}:${{ github.sha }}"
-
-          # сеть для app + db
-          podman network create usersnet 2>/dev/null || true
-
-          # postgres (для простоты каждый раз пересоздаём)
-          podman rm -f usersdb 2>/dev/null || true
-          podman run -d --name usersdb --network usersnet \
-            -e POSTGRES_USER=kubsu \
-            -e POSTGRES_PASSWORD=kubsu \
-            -e POSTGRES_DB=kubsu \
-            postgres:16-alpine
-
-          # ЖДЁМ, пока Postgres реально готов принимать подключения
-          for i in $(seq 1 30); do
-            podman exec usersdb pg_isready -U kubsu -d kubsu && break
-            sleep 1
-          done
-
-          # app
-          podman rm -f usersapp 2>/dev/null || true
-          podman run -d --name usersapp --network usersnet \
-            -p 8015:8015 \
-            -e DATABASE_URL="postgresql+psycopg://kubsu:kubsu@usersdb:5432/kubsu" \
-            -e ROOT_PATH="/${{ secrets.USERNAME }}" \
-            "${{ env.IMAGE }}:${{ github.sha }}"
-
-          podman ps
-
-# syntax=docker/dockerfile:1.6
-
-FROM python:3.12-slim AS base
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
-WORKDIR /app
-
-# ---------- build stage ----------
-FROM base AS builder
-
-RUN python -m pip install --no-cache-dir wheel
-
-COPY pyproject.toml ./
-RUN python -m pip wheel --wheel-dir /wheels .
-RUN python -m pip wheel --wheel-dir /wheels-test ".[test]"
-
-# ---------- runtime stage ----------
-FROM base AS prod
-RUN adduser --disabled-password --gecos "" appuser
-
-COPY --from=builder /wheels /wheels
-RUN python -m pip install --no-index --find-links=/wheels KubSU && rm -rf /wheels
-
-COPY src ./src
-
-ENV PYTHONPATH=/app \
-    ROOT_PATH=""
-EXPOSE 8015
-
-USER appuser
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8015"]
-
-# ---------- test stage (тесты запускаются внутри собранного image) ----------
-FROM prod AS test
-USER root
-COPY --from=builder /wheels-test /wheels-test
-RUN python -m pip install --no-index --find-links=/wheels-test KubSU[test] && rm -rf /wheels-test
-COPY tests ./tests
-USER appuser
-CMD ["pytest", "-q", "tests"]
+Лабораторная работа 5
+Комбинаторное тестирование. Диаграмма состояний и переходов
+Задание 1
+Комбинаторное тестирование с ограничениями
+Контекст: Конфигуратор ноутбука. Пользователь выбирает:
+1. Процессор: Intel i5, Intel i7, AMD Ryzen 7
+2. Оперативная память: 8 ГБ, 16 ГБ, 32 ГБ
+3. Накопитель: SSD 256 ГБ, SSD 512 ГБ, SSD 1 ТБ, HDD 1 ТБ
+4. Видеокарта: Интегрированная, NVIDIA GTX 1650, NVIDIA RTX 3060
+Ограничения бизнес-логики:
+− С Intel i5 нельзя выбрать 32 ГБ ОЗУ
+− С интегрированной видеокартой нельзя выбрать NVIDIA RTX 3060
+− HDD 1 ТБ доступен только с Intel i5 или AMD Ryzen 7
+Задание:
+1. Рассчитайте количество комбинаций при полном переборе.
+2. Примените технику попарного тестирования, учитывая ограничения.
+3. Сгенерируйте оптимальный тестовый набор (можно использовать 
+инструмент или ручной подбор).
+4. Объясните, какие комбинации вы исключили и почему.
+Задание 2
+Тестирование состояний и переходов (State Transition)
+Контекст: Умная кофемашина имеет 4 состояния:
+1. Выключена (Off)
+2. Готова (Ready) — включена, вода есть, зерна есть
+3. Приготовление (Brewing) — готовит кофе
+4. Ошибка (Error) — нет воды или нет зерен
+Переходы:
+− Выкл → Готов: Нажата кнопка POWER при наличии воды и зерен
+− Готов → Приготовление: Нажата кнопка START
+− Приготовление → Готов: Прошло 2 минуты
+− Готов → Ошибка: Закончилась вода ИЛИ закончились зерна
+− Ошибка → Готов: Долита вода И добавлены зерна
+− Любое → Выкл: Долгое нажатие POWER (3 сек)
+Задание:
+1. Постройте диаграмму переходов состояний.
+2. Создайте таблицу переходов со всеми возможными сценариями.
+3. Выделите 5 наиболее критичных тестовых сценариев и объясните, 
+почему они критичны.
+4. Придумайте 2 "зловредных" (mischievous) теста, которые проверяют 
+неочевидное поведение.
