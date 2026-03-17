@@ -2484,7 +2484,7 @@
           <mxGeometry height="38" width="330" x="2991.0122222222226" y="4030.45" as="geometry" />
         </mxCell>
         <mxCell id="A8jkxFA5KBVXWznpXPD7-30" parent="1" style="text;whiteSpace=wrap;html=1;fontFamily=Times New Roman;fontSize=15;" value="Журналы выполнения пайплайнов" vertex="1">
-          <mxGeometry height="38" width="311" x="3343.003333333333" y="4011.001662326389" as="geometry" />
+          <mxGeometry height="38" width="311" x="3149.003333333333" y="3671.001662326389" as="geometry" />
         </mxCell>
         <mxCell id="A8jkxFA5KBVXWznpXPD7-31" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;fontFamily=Times New Roman;fontSize=15;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
