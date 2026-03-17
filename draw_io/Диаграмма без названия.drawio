@@ -2308,11 +2308,6 @@
         <mxCell id="pKewzwrJpYJ2qZ_2mYxn-64" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=14;" value="Предварительная обработка и верификация данных" vertex="1">
           <mxGeometry height="246.11" width="142.46" x="2150.5" y="3645.1699999999996" as="geometry" />
         </mxCell>
-        <mxCell id="pKewzwrJpYJ2qZ_2mYxn-74" edge="1" parent="1" source="A8jkxFA5KBVXWznpXPD7-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=14;exitX=1.01;exitY=0.206;exitDx=0;exitDy=0;exitPerimeter=0;" target="pKewzwrJpYJ2qZ_2mYxn-66">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="2979" y="3592.45" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="pKewzwrJpYJ2qZ_2mYxn-65" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=14;" value="Развертывание и обновление сервисов" vertex="1">
           <mxGeometry height="60" width="120" x="2704" y="3562.3399999999997" as="geometry" />
         </mxCell>
@@ -3871,7 +3866,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="A8jkxFA5KBVXWznpXPD7-415" parent="1" style="text;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=14;" value="валидированные результаты анализа" vertex="1">
-          <mxGeometry height="38" width="179" x="1174.5" y="9540.002493489585" as="geometry" />
+          <mxGeometry height="38" width="179" x="1177" y="9577.002493489585" as="geometry" />
         </mxCell>
         <mxCell id="A8jkxFA5KBVXWznpXPD7-416" parent="1" style="text;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=14;" value="отчёт о валидации модели" vertex="1">
           <mxGeometry height="38" width="179" x="1169.003333333334" y="9491.99916015625" as="geometry" />
@@ -3890,7 +3885,7 @@
         </mxCell>
         <mxCell id="A8jkxFA5KBVXWznpXPD7-419" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;fontFamily=Helvetica;fontSize=14;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="1174" y="9577" as="sourcePoint" />
+            <mxPoint x="1166" y="9568" as="sourcePoint" />
             <mxPoint x="1540" y="9568" as="targetPoint" />
           </mxGeometry>
         </mxCell>
