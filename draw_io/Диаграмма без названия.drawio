@@ -3942,25 +3942,25 @@
           <mxGeometry height="77.33" width="134" x="2616" y="3724.0000000000005" as="geometry" />
         </mxCell>
         <mxCell id="O-2XLfkeRjtb03MgmtZl-2" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="А1" vertex="1">
-          <mxGeometry height="30" width="60" x="1926.5" y="3755.67" as="geometry" />
+          <mxGeometry height="30" width="60" x="1922" y="3757" as="geometry" />
         </mxCell>
         <mxCell id="O-2XLfkeRjtb03MgmtZl-3" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="А2" vertex="1">
           <mxGeometry height="30" width="60" x="2106.48" y="3847.05" as="geometry" />
         </mxCell>
         <mxCell id="O-2XLfkeRjtb03MgmtZl-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="А3" vertex="1">
-          <mxGeometry height="30" width="60" x="2293.04" y="3741" as="geometry" />
+          <mxGeometry height="30" width="60" x="2283" y="3752" as="geometry" />
         </mxCell>
         <mxCell id="O-2XLfkeRjtb03MgmtZl-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="А4" vertex="1">
           <mxGeometry height="30" width="60" x="2448" y="3665.4500000000003" as="geometry" />
         </mxCell>
         <mxCell id="O-2XLfkeRjtb03MgmtZl-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="А5" vertex="1">
-          <mxGeometry height="30" width="60" x="2609" y="3665.45" as="geometry" />
+          <mxGeometry height="30" width="60" x="2604" y="3665.45" as="geometry" />
         </mxCell>
         <mxCell id="O-2XLfkeRjtb03MgmtZl-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="А6" vertex="1">
-          <mxGeometry height="30" width="60" x="2761" y="3978.999999999999" as="geometry" />
+          <mxGeometry height="30" width="60" x="2755" y="3996.999999999999" as="geometry" />
         </mxCell>
         <mxCell id="O-2XLfkeRjtb03MgmtZl-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="А7" vertex="1">
-          <mxGeometry height="30" width="60" x="2915" y="3764" as="geometry" />
+          <mxGeometry height="30" width="60" x="2912" y="3766" as="geometry" />
         </mxCell>
         <mxCell id="O-2XLfkeRjtb03MgmtZl-9" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;fontFamily=Helvetica;fontSize=14;" value="">
           <mxGeometry height="50" relative="1" width="50" as="geometry">
